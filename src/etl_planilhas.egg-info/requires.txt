@@ -1,0 +1,14 @@
+openpyxl
+pandas
+pandera
+psycopg[binary]
+pydantic
+pydantic-settings
+pyyaml
+sqlalchemy
+typer
+
+[dev]
+pytest
+faker
+ruff

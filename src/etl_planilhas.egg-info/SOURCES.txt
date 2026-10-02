@@ -1,0 +1,11 @@
+pyproject.toml
+src/etl/__init__.py
+src/etl/extract/__init__.py
+src/etl/load/__init__.py
+src/etl/transform/__init__.py
+src/etl_planilhas.egg-info/PKG-INFO
+src/etl_planilhas.egg-info/SOURCES.txt
+src/etl_planilhas.egg-info/dependency_links.txt
+src/etl_planilhas.egg-info/entry_points.txt
+src/etl_planilhas.egg-info/requires.txt
+src/etl_planilhas.egg-info/top_level.txt

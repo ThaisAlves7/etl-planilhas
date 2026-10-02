@@ -20,5 +20,9 @@ etl = "etl.cli:app"
 [project.optional-dependencies]
 dev = ["pytest", "faker", "ruff"]
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
