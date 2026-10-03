@@ -1,8 +1,37 @@
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 import csv
+import datetime
+from decimal import Decimal, ROUND_HALF_UP
 
-from scripts.gerar_dados_faker import gerar_pedidos_limpos
-from scripts.gerar_dados_faker import salvar_csv, salvar_xlsx
+from scripts.gerar_dados_faker import (
+    gerar_pedidos_limpos,
+    injetar_defeitos,
+    salvar_csv,
+    salvar_xlsx,
+    FORMATOS_DATA_SUJA,
+    FORMATOS_VALOR_SUJO,
+    APLICADORES,
+    DEFEITOS,
+)
+
+
+def _ler_data_suja(texto: str):
+    for formato in FORMATOS_DATA_SUJA:
+
+        try:
+            return datetime.datetime.strptime(texto, formato).date()
+
+        except ValueError:
+            continue
+
+    return None
+
+
+def _ler_valor_sujo(texto: str) -> Decimal:
+    texto = texto.replace("R$", "").strip()
+    texto = texto.replace(".", "").replace(",", ".")
+
+    return Decimal(texto).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
 def test_valor_total_bate_com_quantidade_vezes_unitario():
@@ -37,3 +66,34 @@ def test_salvar_pedidos_limpos(tmp_path):
     assert len(linhas) == len(pedidos)
     assert linhas[0]["numero_pedido"] == pedidos[0]["numero_pedido"]
     assert linhas[0]["cliente_nome"] == pedidos[0]["cliente_nome"]
+
+
+def test_datas_sujas_sao_recuperaveis_e_contagem_bate():
+    limpos = gerar_pedidos_limpos(200)
+    sujos, contagem = injetar_defeitos(limpos)
+
+    qtde_sujas = 0
+
+    for limpo, sujo in zip(limpos, sujos):
+        if isinstance(sujo["data_pedido"], str):
+            qtde_sujas += 1
+
+            assert _ler_data_suja(sujo["data_pedido"]) == limpo["data_pedido"]
+
+    assert qtde_sujas == contagem["data_formato_misto"]
+
+
+def test_valores_sujos_sao_recuperaveis_e_contagem_bate():
+    limpos = gerar_pedidos_limpos(200)
+    sujos, contagem = injetar_defeitos(limpos)
+
+    qtde_sujas = 0
+
+    for limpo, sujo in zip(limpos, sujos):
+        if isinstance(sujo["valor_unitario"], str):
+            qtde_sujas += 1
+
+            assert _ler_valor_sujo(sujo["valor_unitario"]) == limpo["valor_unitario"]
+            assert _ler_valor_sujo(sujo["valor_total"]) == limpo["valor_total"]
+
+    assert qtde_sujas == contagem["valor_com_rs_virgula"]

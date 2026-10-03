@@ -1,7 +1,9 @@
 import random
-from faker import Faker
 import pandas as pd
 import csv
+import copy
+
+from faker import Faker
 from decimal import ROUND_HALF_UP, Decimal
 
 fake = Faker("pt_BR")
@@ -32,6 +34,25 @@ produtos = [
     "SSD",
     "Placa mãe",
 ]
+
+FORMATOS_DATA_SUJA = [
+    "%d/%m/%Y",
+    "%d/%m/%y",
+    "%Y/%m/%d",
+    "%m/%d/%Y",
+]
+
+FORMATOS_VALOR_SUJO = [
+    ("R$ ", True),  # R$ 1.234,50
+    ("", True),  # 1.234,50
+    ("", False),  # 1234,50
+    ("R$ ", False),  # R$ 1234,50
+]
+
+DEFEITOS = {
+    "data_formato_misto": 0.05,
+    "valor_com_rs_virgula": 0.10,
+}
 
 
 def gerar_pedidos_limpos(n: int) -> list[dict]:
@@ -68,8 +89,59 @@ def gerar_pedidos_limpos(n: int) -> list[dict]:
     return pedidos
 
 
-def injetar_defeitos(pedidos: list[dict]) -> tuple[list[dict], dict[str, int]]:
-    """Recebe os pedidos limpos, devolve (pedidos_sujos, contagem_de_defeitos). Sem I/O."""
+def _sujar_data(pedido: dict, rng: random.Random) -> str:
+    formato = rng.choice(FORMATOS_DATA_SUJA)
+    pedido["data_pedido"] = pedido["data_pedido"].strftime(formato)
+
+
+def _formatar_brl(valor: Decimal, com_milhar: bool) -> str:
+    if com_milhar:
+        texto = f"{valor:,.2f}"
+        return texto.replace(",", "X").replace(".", ",").replace("X", ".")  # 1,234.50
+
+    return f"{valor:.2f}".replace(".", ",")  # 1234,50
+
+
+def _sujar_valor(pedido: dict, rng: random.Random) -> None:
+    prefixo, com_milhar = rng.choice(FORMATOS_VALOR_SUJO)
+
+    for campo in ("valor_unitario", "valor_total"):
+        pedido[campo] = prefixo + _formatar_brl(pedido[campo], com_milhar)
+
+
+APLICADORES = {
+    "data_formato_misto": _sujar_data,
+    "valor_com_rs_virgula": _sujar_valor,
+    # "nome_sujo": _sujar_nome,
+}
+
+
+def injetar_defeitos(
+    pedidos: list[dict],
+    seed: int = 42,
+):
+    rng = random.Random(seed)
+    sujos = copy.deepcopy(pedidos)
+    contagem: dict[str, int] = {}
+
+    indices = list(range(len(sujos)))
+    rng.shuffle(indices)
+    inicio = 0
+
+    # Obter os defeitos a serem usados para "sujar" os dados
+    for nome, fracao in DEFEITOS.items():
+        k = round(len(sujos) * fracao)
+        bloco = indices[inicio : inicio + k]
+        inicio += k
+
+        # Chamar a função que vai realizar o "sujeira" dos dados
+        aplicar = APLICADORES[nome]
+        for i in bloco:
+            aplicar(sujos[i], rng)
+
+        contagem[nome] = len(bloco)
+
+    return sujos, contagem
 
 
 def salvar_csv(pedidos: list[dict], caminho: str) -> None:
@@ -85,10 +157,14 @@ def salvar_xlsx(pedidos: list[dict], caminho: str) -> None:
 
 
 def main() -> None:
-    limpos = gerar_pedidos_limpos(500)
+    limpos = gerar_pedidos_limpos(200)
     sujos, defeitos = injetar_defeitos(limpos)
 
-    salvar_csv(limpos, "data/sample/vendas_limpos.csv")
-    salvar_xlsx(limpos, "data/sample/vendas_limpos.xlsx")
+    # salvar_csv(limpos, "data/sample/vendas_limpos.csv")
+    # salvar_xlsx(limpos, "data/sample/vendas_limpos.xlsx")
 
-    # print(defeitos)
+    print(defeitos)
+
+
+if __name__ == "__main__":
+    main()
