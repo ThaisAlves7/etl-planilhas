@@ -1,21 +1,21 @@
 numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_unitario;valor_total
-9600133;2025-10-06;Ísis Borges;novaismiguel@example.net;Gabinete;4;17.38;69.52
+9600133;2025-10-06;ísis borges;novaismiguel@example.net;Gabinete;4;17.38;69.52
 3794026;2025-06-07;Ísis Leão;pedroteixeira@example.com;Memória RAM;8;115.49;923.92
-1559407;2025-10-28;Caleb Garcia;jbarros@example.com;Cooler;18;48.03;864.54
-3103413;2026-06-27;Maria Cecília Oliveira;dda-mota@example.net;Disco rígido;2;19.75;39.50
+1559407;28/10/25;Caleb Garcia;jbarros@example.com;Cooler;18;48.03;864.54
+3103413;2026-06-27;Maria Cecília Oliveira;dda-mota@example.net;Disco rígido;2;19,75;39,50
 3419283;2025-01-29;Sr. Léo Fogaça;oda-mata@example.net;Placa de vídeo;8;255.15;2041.20
-5030564;2024-11-19;Hellena Rodrigues;otavio76@example.net;Placa mãe;18;103.42;1861.56
+5030564;2024-11-19;Hellena Rodrigues;otavio76@example.net;Placa mãe;18;R$ 103,42;R$ 1.861,56
 2388496;2026-07-20;Cecília Da Luz;ofonseca@example.org;Gabinete;14;114.12;1597.68
 0122691;2025-07-10;Sabrina Borges;qmoura@example.net;Processador;1;380.61;380.61
 8451462;2025-08-29;Danilo Rodrigues;melissa28@example.org;Processador;14;173.42;2427.88
 8932528;2026-08-30;Letícia Porto;peixotoayla@example.com;Fonte;7;478.82;3351.74
-4303911;2026-03-21;Daniel Fonseca;teixeirasophia@example.org;Memória RAM;4;50.91;203.64
+4303911;2026-03-21;DANIEL FONSECA;teixeirasophia@example.org;Memória RAM;4;50.91;203.64
 2489638;2026-04-07;Renan Novaes;ana-liviaguerra@example.net;Gabinete;12;424.51;5094.12
-8713315;2024-10-17;Maria Fernanda Macedo;pedro-lucasabreu@example.org;Placa mãe;2;366.22;732.44
-1051834;2026-02-03;Dra. Ana Liz Da Conceição;valentinacardoso@example.net;Cooler;4;486.69;1946.76
+8713315;2024-10-17; Maria    Fernanda    Macedo  ;pedro-lucasabreu@example.org;Placa mãe;2;366.22;732.44
+1051834;03/02/26;Dra. Ana Liz Da Conceição;valentinacardoso@example.net;Cooler;4;486.69;1946.76
 7631165;2025-08-07;Olívia Da Cruz;dsiqueira@example.net;Fonte;3;278.26;834.78
-6513338;2025-08-25;Beatriz Araújo;rcirino@example.com;Memória RAM;19;100.18;1903.42
-8108013;2025-01-31;Breno Macedo;nmendes@example.com;Gabinete;2;332.33;664.66
+6513338;2025-08-25;Beatriz Araújo;rcirino@example.com;Memória RAM;19;R$ 100,18;R$ 1.903,42
+8108013;2025-01-31;bRENo maCEDo;nmendes@example.com;Gabinete;2;332.33;664.66
 0647468;2026-01-28;Enzo Garcia;mcassiano@example.com;Memória RAM;3;428.38;1285.14
 8050097;2025-10-04;Benjamin Pacheco;danilomoraes@example.org;Fonte;13;142.60;1853.80
 1361939;2025-12-10;Bernardo Peixoto;leaorebeca@example.com;Disco rígido;6;188.24;1129.44
@@ -29,29 +29,29 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 5433036;2025-05-29;Guilherme Marques;vargasagatha@example.com;Fonte;19;438.80;8337.20
 8501429;2026-09-05;Sophia Guerra;breno19@example.com;Cooler;7;329.44;2306.08
 8169340;2026-03-04;Dr. Pedro Henrique Pereira;moreirastephany@example.net;Processador;15;75.72;1135.80
-6159514;2025-10-07;Dra. Fernanda Fonseca;zduarte@example.net;Placa mãe;8;373.77;2990.16
+6159514;2025-10-07;Dra. Fernanda Fonseca;zduarte@example.net;Placa mãe;8;R$ 373,77;R$ 2.990,16
 3662994;2025-07-25;Yuri Cardoso;da-rosaallana@example.org;Cooler;9;374.77;3372.93
-7738721;2025-04-27;Luna Martins;francisco34@example.org;Disco rígido;19;202.70;3851.30
+7738721;2025-04-27;LUNA MARTINS;francisco34@example.org;Disco rígido;19;202.70;3851.30
 0379176;2026-07-11;Diogo Alves;hadassamonteiro@example.com;Memória RAM;5;257.22;1286.10
 0163287;2024-11-07;Diogo Rezende;joaquimmarques@example.org;Processador;2;431.25;862.50
 9579868;2025-08-23;Vitória Novais;maria-lauramachado@example.com;Cooler;6;397.08;2382.48
-8734714;2025-03-22;João Guilherme Vargas;antonella81@example.org;Cooler;20;36.45;729.00
-2316658;2025-09-07;Igor Gomes;costelalaura@example.com;Placa mãe;20;498.08;9961.60
+8734714;2025-03-22;joão guilherme vargas;antonella81@example.org;Cooler;20;36.45;729.00
+2316658;2025-09-07;iGOr GomES;costelalaura@example.com;Placa mãe;20;498.08;9961.60
 9670546;2026-06-17;Alícia Teixeira;vnascimento@example.net;Placa de vídeo;9;485.68;4371.12
 3467065;2026-02-02;Hellena Mendonça;ksilveira@example.com;Placa mãe;4;342.45;1369.80
 6990162;2026-06-27;Vitor Alves;carlos-eduardoda-luz@example.com;Fonte;9;385.46;3469.14
 5646417;2024-10-16;Sr. Rafael Duarte;ferreirapietro@example.net;Processador;4;150.28;601.12
-0330923;2025-01-02;Asafe Sá;nunespedro-henrique@example.com;Gabinete;15;6.61;99.15
-9912419;2024-10-20;Sra. Maria Eduarda Cavalcante;fernanda63@example.org;Placa mãe;17;382.17;6496.89
-4919058;2025-08-11;Isabelly Caldeira;davi-miguel85@example.org;Gabinete;4;435.91;1743.64
-6572628;2026-09-07;Rebeca Caldeira;stephany77@example.com;Processador;17;306.44;5209.48
+0330923;2025-01-02;Asafe Sá;nunespedro-henrique@example.com;Gabinete;15;R$ 6,61;R$ 99,15
+9912419;2024-10-20;sra. maria eduarda cavalcante;fernanda63@example.org;Placa mãe;17;382.17;6496.89
+4919058;2025/08/11;Isabelly Caldeira;davi-miguel85@example.org;Gabinete;4;435.91;1743.64
+6572628;2026-09-07;Rebeca Caldeira;stephany77@example.com;Processador;17;R$ 306,44;R$ 5.209,48
 3147379;2025-12-22;Dra. Juliana Duarte;bfernandes@example.com;Placa mãe;12;382.44;4589.28
-5454948;2024-10-09;Sr. Ryan Cunha;enzo-gabrielda-costa@example.net;Fonte;17;459.65;7814.05
+5454948;2024-10-09;Sr. Ryan Cunha;enzo-gabrielda-costa@example.net;Fonte;17;R$ 459,65;R$ 7.814,05
 3777014;2025-03-12;Rebeca Novais;ana-lauraribeiro@example.net;Fonte;16;14.64;234.24
 5685574;2025-05-14;Dr. Yuri Moura;isaquesilveira@example.org;Disco rígido;10;123.53;1235.30
 2337498;2025-12-12;Sr. Vitor Gabriel Teixeira;correiaana-carolina@example.org;Memória RAM;19;473.74;9001.06
 8240084;2026-02-23;Sr. Kevin Albuquerque;marianecaldeira@example.org;Placa mãe;16;408.93;6542.88
-7752047;2024-12-24;Larissa Melo;guerramariane@example.org;SSD;5;68.55;342.75
+7752047;2024-12-24; Larissa  Melo ;guerramariane@example.org;SSD;5;68.55;342.75
 2941318;2026-04-13;Ana Júlia Cassiano;rebecagarcia@example.com;Placa mãe;18;86.74;1561.32
 6499091;2026-08-25;Letícia Pastor;otavioda-luz@example.net;Disco rígido;20;214.45;4289.00
 2812067;2026-02-17;Emanuel Da Costa;cda-rocha@example.org;Disco rígido;18;378.86;6819.48
@@ -59,27 +59,27 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 4994717;2026-02-17;Bento Cavalcante;gda-mata@example.net;SSD;15;450.31;6754.65
 9065940;2024-12-07;Maysa Barros;teixeiravitor-gabriel@example.net;Memória RAM;4;127.71;510.84
 8742967;2026-09-10;Erick Melo;aferreira@example.com;Placa mãe;11;15.41;169.51
-6746807;2024-12-05;Sr. Enrico Farias;ayla16@example.net;Placa de vídeo;8;296.28;2370.24
-6038597;2026-01-02;Vitor Hugo Martins;costelavitor@example.net;Placa de vídeo;3;355.38;1066.14
+6746807;2024-12-05;sr. enrico farias;ayla16@example.net;Placa de vídeo;8;296.28;2370.24
+6038597;2026-01-02;VITOR HUGO MARTINS;costelavitor@example.net;Placa de vídeo;3;355.38;1066.14
 7109324;2025-11-08;João Pedro Macedo;oborges@example.org;Placa de vídeo;8;38.36;306.88
 2748467;2026-09-18;Bárbara Ramos;maria-alicenovaes@example.org;Disco rígido;11;40.07;440.77
-8214658;2025-04-15;Esther Peixoto;da-pazana-cecilia@example.net;Disco rígido;9;336.14;3025.26
+8214658;2025/04/15;Esther Peixoto;da-pazana-cecilia@example.net;Disco rígido;9;336.14;3025.26
 7875588;2025-07-04;Rebeca Cassiano;marcos-vinicius39@example.com;SSD;18;70.49;1268.82
-5766270;2025-01-02;Noah Aparecida;guilherme71@example.net;Cooler;8;393.39;3147.12
+5766270;02/01/2025;Noah Aparecida;guilherme71@example.net;Cooler;8;393.39;3147.12
 2621745;2025-12-31;Alice Silveira;frezende@example.com;Cooler;7;51.69;361.83
 5780913;2026-01-06;Yasmin Garcia;rafael16@example.org;SSD;12;214.67;2576.04
-2400504;2025-06-21;Beatriz Macedo;pcasa-grande@example.net;Memória RAM;2;338.32;676.64
+2400504;2025-06-21;  Beatriz    Macedo;pcasa-grande@example.net;Memória RAM;2;338.32;676.64
 2196937;2026-07-31;Emilly Cavalcante;ravimartins@example.net;Fonte;2;204.30;408.60
 0748217;2026-08-23;Raul Da Cunha;lais47@example.com;Disco rígido;4;128.08;512.32
 1369594;2026-09-27;Matheus Mendes;augusto64@example.org;Cooler;18;227.06;4087.08
-7439533;2025-12-29;Ana Julia Pereira;gaelpires@example.net;Disco rígido;6;142.88;857.28
+7439533;2025-12-29;ana julia pereira;gaelpires@example.net;Disco rígido;6;142.88;857.28
 7095214;2025-05-28;Leonardo Viana;mcavalcanti@example.org;Placa mãe;3;224.35;673.05
 8424745;2026-05-12;Maria Clara Moura;jbarbosa@example.org;Placa mãe;4;30.04;120.16
-5160481;2025-08-30;Maria Laura Novais;giovanna51@example.net;Disco rígido;1;484.65;484.65
+5160481;2025-08-30;Maria Laura Novais;giovanna51@example.net;Disco rígido;1;R$ 484,65;R$ 484,65
 9859317;2026-07-28;Ravy Alves;julia12@example.org;SSD;6;206.17;1237.02
 1138267;2025-06-30;Kevin Monteiro;vpastor@example.net;Placa de vídeo;7;433.00;3031.00
 1796405;2025-03-09;Oliver Rezende;xda-costa@example.org;Cooler;6;192.59;1155.54
-5064317;2024-12-08;Maria Eduarda Nogueira;asafearagao@example.com;SSD;9;463.63;4172.67
+5064317;2024-12-08; Maria    Eduarda    Nogueira;asafearagao@example.com;SSD;9;463.63;4172.67
 9318393;2026-05-19;Davi Lucas Viana;bellavasconcelos@example.org;Placa mãe;10;214.39;2143.90
 2284210;2025-01-06;Agatha Da Mota;renan95@example.org;Gabinete;16;81.62;1305.92
 2681177;2026-04-23;João Aragão;machadomilena@example.org;Placa mãe;7;484.51;3391.57
@@ -94,25 +94,25 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 2901476;2025-09-22;Sr. Benjamim Cassiano;rleao@example.org;Disco rígido;11;467.68;5144.48
 6149784;2024-11-04;Bruna Ferreira;dpeixoto@example.org;Cooler;11;123.15;1354.65
 2445107;2026-04-01;Kevin Cunha;jose-pedrogarcia@example.net;Gabinete;5;337.49;1687.45
-5160607;2026-08-06;Srta. Sarah Novais;liz96@example.net;Memória RAM;15;161.51;2422.65
+5160607;2026-08-06;srta. sarah novais;liz96@example.net;Memória RAM;15;161.51;2422.65
 1605297;2026-06-02;Maria Vitória Da Rocha;felipe61@example.org;Memória RAM;1;231.85;231.85
 1645352;2024-11-26;Maria Liz Moura;mouranina@example.org;Placa mãe;3;271.13;813.39
 1243292;2026-04-10;Dr. Diogo Da Costa;cavalcantimarina@example.com;Fonte;9;70.57;635.13
 9955271;2025-09-09;Melissa Rodrigues;yan90@example.com;Fonte;3;440.24;1320.72
 7700541;2026-01-16;Ana Sophia Das Neves;pimentanatalia@example.com;Placa mãe;10;83.08;830.80
-9359782;2026-09-02;Ana Cecília Machado;zcaldeira@example.com;Placa mãe;10;307.78;3077.80
+9359782;2026/09/02;Ana Cecília Machado;zcaldeira@example.com;Placa mãe;10;307.78;3077.80
 2037788;2025-12-21;Srta. Sofia Ramos;esther46@example.com;Placa mãe;1;335.59;335.59
-5186449;2026-07-02;Sr. Lucas Gabriel Azevedo;enrico92@example.com;Memória RAM;10;466.22;4662.20
+5186449;2026-07-02;sR. luCAS gabRiEl AZEvEDo;enrico92@example.com;Memória RAM;10;466.22;4662.20
 9148652;2026-02-03;Matteo Cardoso;ramoslavinia@example.net;Memória RAM;5;135.91;679.55
-2357332;2025-01-23;Sr. Luiz Miguel Das Neves;guilherme88@example.net;Gabinete;18;81.95;1475.10
-5929622;2025-02-11;Ana Carolina Ribeiro;lunaaparecida@example.com;Fonte;20;109.26;2185.20
+2357332;2025-01-23;sR. LuIZ MIguEL das Neves;guilherme88@example.net;Gabinete;18;81.95;1475.10
+5929622;2025-02-11;ana carolina ribeiro;lunaaparecida@example.com;Fonte;20;109.26;2185.20
 4738347;2026-07-24;Sr. Pedro Miguel Pimenta;emillyrocha@example.net;Gabinete;7;345.31;2417.17
 4688623;2026-05-10;Nicole Vargas;theodoroaragao@example.net;Placa de vídeo;17;246.82;4195.94
 1814124;2025-08-26;Maria Fernanda Novaes;luizaborges@example.org;Gabinete;3;318.97;956.91
-6068536;2026-09-28;Marcela Alves;pietro05@example.org;Processador;2;6.76;13.52
-2204727;2025-08-25;Dra. Lívia Vieira;barrosarthur-miguel@example.com;SSD;9;84.98;764.82
+6068536;2026-09-28;Marcela Alves;pietro05@example.org;Processador;2;6,76;13,52
+2204727;25/08/2025;Dra. Lívia Vieira;barrosarthur-miguel@example.com;SSD;9;84.98;764.82
 9861434;2024-12-30;Dom Novaes;larissaporto@example.net;Placa mãe;18;354.31;6377.58
-7980893;2026-03-11;Ana Luiza Camargo;liz09@example.com;Processador;1;60.38;60.38
+7980893;2026-03-11;Ana LuIZa CAmArgO;liz09@example.com;Processador;1;60.38;60.38
 1851888;2026-04-29;Oliver Cirino;gomesmaria-isis@example.org;Fonte;18;22.83;410.94
 4051531;2026-04-18;Maria Julia Freitas;joao-felipe05@example.net;Cooler;19;278.50;5291.50
 7221704;2025-02-26;Sr. Ravi Sampaio;bryandias@example.com;Fonte;5;25.71;128.55
@@ -120,22 +120,22 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 5277584;2026-05-10;Maysa Gomes;bbarros@example.net;Fonte;8;335.13;2681.04
 5115447;2025-12-16;Yago Da Rocha;scavalcante@example.com;Cooler;18;442.65;7967.70
 5964016;2025-06-24;Dr. Asafe Siqueira;bentocasa-grande@example.net;Disco rígido;20;375.99;7519.80
-2135569;2024-10-25;Maysa Andrade;manuellafreitas@example.com;Processador;6;488.22;2929.32
-2856543;2026-09-04;Ana Vitória Oliveira;sousamarcelo@example.com;Fonte;14;17.27;241.78
+2135569;2024/10/25;Maysa Andrade;manuellafreitas@example.com;Processador;6;488.22;2929.32
+2856543;2026-09-04;  Ana   Vitória   Oliveira ;sousamarcelo@example.com;Fonte;14;17.27;241.78
 1447394;2026-02-21;Maria Julia Novais;hcosta@example.org;Disco rígido;14;402.11;5629.54
 7155188;2025-05-02;Rael Cavalcanti;levi25@example.net;Memória RAM;9;83.80;754.20
-2370589;2025-06-28;Davi Costa;erickazevedo@example.com;SSD;13;436.72;5677.36
-6691251;2025-08-26;Pietra Moura;jose-miguel89@example.org;SSD;8;103.79;830.32
+2370589;2025-06-28;DAVI COSTA;erickazevedo@example.com;SSD;13;436.72;5677.36
+6691251;2025-08-26;Pietra Moura;jose-miguel89@example.org;SSD;8;R$ 103,79;R$ 830,32
 0182422;2025-05-25;Pedro Montenegro;ceciliamoreira@example.com;Disco rígido;12;156.07;1872.84
-8424981;2025-10-04;José Costa;leandrocavalcante@example.net;Disco rígido;8;16.71;133.68
+8424981;2025-10-04;José Costa;leandrocavalcante@example.net;Disco rígido;8;R$ 16,71;R$ 133,68
 0010943;2026-04-15;Maitê Nunes;opinto@example.org;Memória RAM;13;167.49;2177.37
-4736471;2026-02-17;Ísis Da Rocha;lunnaleao@example.com;Placa mãe;9;178.82;1609.38
+4736471;2026-02-17;Ísis Da Rocha;lunnaleao@example.com;Placa mãe;9;178,82;1609,38
 9255562;2026-04-11;Gabrielly Fernandes;diasrodrigo@example.com;Placa mãe;13;341.36;4437.68
 3210469;2025-08-03;João Felipe Machado;beatrizoliveira@example.net;Memória RAM;11;469.92;5169.12
 8774701;2026-08-23;Sr. Emanuel Monteiro;nda-costa@example.net;Gabinete;9;93.39;840.51
 7974801;2025-08-13;Sr. Benicio Da Paz;emanuelly65@example.org;Cooler;2;58.66;117.32
 8358416;2025-10-05;Ana Júlia Nunes;isaac21@example.com;Fonte;12;365.63;4387.56
-2398680;2024-11-04;Dr. Luiz Otávio Sá;brendamelo@example.net;Placa mãe;14;305.07;4270.98
+2398680;2024-11-04;Dr. Luiz Otávio Sá;brendamelo@example.net;Placa mãe;14;305,07;4270,98
 8259526;2026-09-26;Clarice Pereira;barbara88@example.net;Disco rígido;4;195.67;782.68
 0551694;2026-05-07;Letícia Melo;peixotomaria-julia@example.com;Cooler;9;26.97;242.73
 0972896;2025-01-18;Heloísa Silveira;beniciooliveira@example.net;Placa mãe;1;262.36;262.36
@@ -143,8 +143,8 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 8578652;2025-09-03;Srta. Stella Costela;zoe54@example.net;Memória RAM;11;313.46;3448.06
 4843443;2026-02-18;Evelyn Da Cruz;edias@example.com;Cooler;10;256.03;2560.30
 1986652;2025-05-02;Kamilly Da Paz;emanuel57@example.net;Gabinete;11;204.19;2246.09
-3848421;2025-12-26;Rhavi Cunha;ryanaragao@example.net;Cooler;18;68.01;1224.18
-3016571;2026-02-11;Heloisa Porto;anthonynovaes@example.org;Processador;13;340.27;4423.51
+3848421;2025-12-26;  Rhavi  Cunha ;ryanaragao@example.net;Cooler;18;68.01;1224.18
+3016571;2026-02-11;heloisa porto;anthonynovaes@example.org;Processador;13;340.27;4423.51
 3454019;2025-03-20;Olívia Mendes;cavalcantilara@example.org;Cooler;20;286.71;5734.20
 7240049;2025-12-16;Miguel Viana;alice78@example.net;Gabinete;18;417.69;7518.42
 7431527;2026-01-18;Catarina Montenegro;arthursousa@example.com;Fonte;10;109.04;1090.40
@@ -152,26 +152,26 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 6374549;2026-03-14;André Da Luz;da-luzeloah@example.net;Processador;17;239.23;4066.91
 1742684;2026-02-18;Bento Rios;emilly93@example.org;Fonte;3;145.47;436.41
 7956878;2026-05-11;Rhavi Cassiano;thalesrodrigues@example.net;Disco rígido;3;410.12;1230.36
-8519108;2026-07-24;Vinicius Machado;stellacassiano@example.org;Disco rígido;10;116.20;1162.00
+8519108;2026-07-24;vinicius machado;stellacassiano@example.org;Disco rígido;10;116.20;1162.00
 3971870;2025-08-29;Dr. Danilo Rodrigues;kmarques@example.org;Disco rígido;5;17.09;85.45
 4064039;2024-11-24;Nicole Rocha;sferreira@example.org;Memória RAM;16;307.58;4921.28
 7046226;2025-07-02;Ana Liz Azevedo;ymachado@example.com;Disco rígido;15;210.15;3152.25
 5128682;2026-03-18;Vitor Hugo Carvalho;andresa@example.org;Disco rígido;13;249.72;3246.36
-8686337;2025-06-12;Ravi Rocha;marcos-vinicius10@example.net;Placa de vídeo;5;329.75;1648.75
-3119079;2026-02-05;Allana Da Costa;da-cruzcaio@example.com;Disco rígido;4;390.32;1561.28
-3028439;2025-05-23;Isabel Nogueira;renan42@example.net;Placa mãe;6;403.03;2418.18
-4408926;2025-11-12;Hellena Jesus;ferreiragiovanna@example.net;Disco rígido;15;29.86;447.90
-4628733;2025-05-09;Dr. Nicolas Cassiano;maria-fernandaaraujo@example.net;SSD;4;230.95;923.80
+8686337;2025-06-12;Ravi Rocha;marcos-vinicius10@example.net;Placa de vídeo;5;329,75;1.648,75
+3119079;2026-02-05;Allana Da Costa;da-cruzcaio@example.com;Disco rígido;4;390,32;1.561,28
+3028439;2025-05-23;  Isabel   Nogueira  ;renan42@example.net;Placa mãe;6;403.03;2418.18
+4408926;2025-11-12;HELLENA JESUS;ferreiragiovanna@example.net;Disco rígido;15;29.86;447.90
+4628733;2025-05-09;Dr. Nicolas Cassiano;maria-fernandaaraujo@example.net;SSD;4;R$ 230,95;R$ 923,80
 8263435;2026-01-17;Maria Vitória Novais;ffreitas@example.net;Fonte;17;494.01;8398.17
 6990139;2026-03-15;Srta. Ana Júlia Da Mata;maria-luizacostela@example.com;Placa mãe;15;308.26;4623.90
 3173936;2026-08-01;Anthony Gabriel Cunha;alexia67@example.net;Placa mãe;14;416.13;5825.82
 4587717;2026-04-11;Maria Alice Das Neves;nicolas55@example.com;SSD;15;449.12;6736.80
-2048996;2025-05-05;Henry Sousa;bellada-conceicao@example.com;Disco rígido;15;133.30;1999.50
+2048996;2025-05-05;Henry Sousa;bellada-conceicao@example.com;Disco rígido;15;133,30;1.999,50
 8547772;2026-03-21;Isabelly Monteiro;lucca28@example.com;Placa mãe;9;384.08;3456.72
 0801006;2025-01-10;Vitor Hugo Ramos;davi-luizsantos@example.org;Gabinete;16;315.24;5043.84
-7509977;2024-10-13;Henrique Montenegro;balbuquerque@example.net;Gabinete;15;43.35;650.25
-0862118;2025-01-18;Sra. Zoe Da Paz;sarada-cunha@example.com;Fonte;8;139.50;1116.00
-5679334;2026-02-14;Miguel Barros;rezendebenicio@example.org;Processador;18;44.89;808.02
+7509977;2024-10-13;Henrique Montenegro;balbuquerque@example.net;Gabinete;15;R$ 43,35;R$ 650,25
+0862118;2025-01-18;SrA. Zoe Da PAz;sarada-cunha@example.com;Fonte;8;139.50;1116.00
+5679334;2026-02-14;  Miguel  Barros;rezendebenicio@example.org;Processador;18;44.89;808.02
 8700217;2026-06-11;Maria Helena Garcia;gabriel80@example.org;Processador;8;194.60;1556.80
 0148902;2026-08-11;Renan Da Mata;arthur-gabriel39@example.org;Cooler;7;36.79;257.53
 2939685;2025-07-09;Sra. Ana Vitória Da Rosa;emanuelmontenegro@example.net;Cooler;11;273.59;3009.49
@@ -185,16 +185,16 @@ numero_pedido;data_pedido;cliente_nome;cliente_email;produto;quantidade;valor_un
 5937526;2026-09-10;Catarina Da Rosa;mariane93@example.com;Cooler;1;197.48;197.48
 6519398;2025-02-10;Lara Viana;siqueiramaria-eduarda@example.net;Processador;6;421.05;2526.30
 1672434;2026-01-26;Pedro Lucas Da Rocha;yvieira@example.org;Cooler;20;269.39;5387.80
-6886805;2026-02-26;Pietra Pacheco;caldeiratheo@example.net;Placa de vídeo;19;284.37;5403.03
-9096561;2024-10-09;Maria Cavalcante;pedro-miguel88@example.net;Processador;3;323.16;969.48
+6886805;2026-02-26;Pietra Pacheco;caldeiratheo@example.net;Placa de vídeo;19;284,37;5.403,03
+9096561;2024/10/09;Maria Cavalcante;pedro-miguel88@example.net;Processador;3;323.16;969.48
 5679825;2026-10-01;Hellena Machado;scaldeira@example.com;Gabinete;15;94.96;1424.40
 2545738;2025-09-20;Danilo Siqueira;cbrito@example.net;SSD;13;167.04;2171.52
 4010512;2026-08-12;Sra. Luiza Azevedo;pietracavalcanti@example.net;Cooler;11;172.06;1892.66
 6736226;2025-07-18;Lucas Novais;manuellapastor@example.com;Cooler;9;377.24;3395.16
-3341918;2025-02-15;Alana Santos;matteo71@example.com;SSD;9;418.28;3764.52
-5969691;2025-06-13;Rebeca Moura;lpinto@example.net;Placa de vídeo;1;375.77;375.77
-2513412;2025-07-01;Sra. Antonella Rocha;ninagomes@example.com;Memória RAM;12;115.99;1391.88
-6627828;2025-01-31;Cecilia Oliveira;joao-lucas25@example.com;Disco rígido;2;378.35;756.70
+3341918;2025-02-15;alana santos;matteo71@example.com;SSD;9;418.28;3764.52
+5969691;2025/06/13;Rebeca Moura;lpinto@example.net;Placa de vídeo;1;375.77;375.77
+2513412;2025-07-01;Sra. Antonella Rocha;ninagomes@example.com;Memória RAM;12;115,99;1.391,88
+6627828;2025-01-31;CECILIA OLIVEIRA;joao-lucas25@example.com;Disco rígido;2;378.35;756.70
 0723688;2026-01-22;Ana Júlia Fogaça;frodrigues@example.com;Processador;7;420.42;2942.94
 1903404;2025-03-15;Sra. Rebeca Cavalcante;lucca79@example.net;Memória RAM;8;67.48;539.84
 9148580;2026-04-10;Sophia Camargo;nnogueira@example.com;SSD;19;474.14;9008.66

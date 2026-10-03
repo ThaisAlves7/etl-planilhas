@@ -1,6 +1,8 @@
-from datetime import datetime, date, timedelta
+import pytest
+
 import csv
 import datetime
+from datetime import date, timedelta
 from decimal import Decimal, ROUND_HALF_UP
 
 from scripts.gerar_dados_faker import (
@@ -9,9 +11,6 @@ from scripts.gerar_dados_faker import (
     salvar_csv,
     salvar_xlsx,
     FORMATOS_DATA_SUJA,
-    FORMATOS_VALOR_SUJO,
-    APLICADORES,
-    DEFEITOS,
 )
 
 
@@ -32,6 +31,10 @@ def _ler_valor_sujo(texto: str) -> Decimal:
     texto = texto.replace(".", "").replace(",", ".")
 
     return Decimal(texto).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _limpar_nome(texto: str) -> str:
+    return " ".join(texto.split()).title()
 
 
 def test_valor_total_bate_com_quantidade_vezes_unitario():
@@ -68,9 +71,10 @@ def test_salvar_pedidos_limpos(tmp_path):
     assert linhas[0]["cliente_nome"] == pedidos[0]["cliente_nome"]
 
 
-def test_datas_sujas_sao_recuperaveis_e_contagem_bate():
+@pytest.mark.parametrize("seed", range(20))
+def test_datas_sujas_sao_recuperaveis_e_contagem_bate(seed):
     limpos = gerar_pedidos_limpos(200)
-    sujos, contagem = injetar_defeitos(limpos)
+    sujos, contagem = injetar_defeitos(limpos, seed=seed)
 
     qtde_sujas = 0
 
@@ -97,3 +101,23 @@ def test_valores_sujos_sao_recuperaveis_e_contagem_bate():
             assert _ler_valor_sujo(sujo["valor_total"]) == limpo["valor_total"]
 
     assert qtde_sujas == contagem["valor_com_rs_virgula"]
+
+
+def test_nomes_sujos_sao_recuperaveis_e_contagem_bate():
+    limpos = gerar_pedidos_limpos(200)
+    sujos, contagem = injetar_defeitos(limpos)
+
+    qtde_sujas = 0
+    for limpo, sujo in zip(limpos, sujos):
+        if sujo["cliente_nome"] != limpo["cliente_nome"]:
+            qtde_sujas += 1
+
+            assert _limpar_nome(sujo["cliente_nome"]) == limpo["cliente_nome"]
+
+    assert qtde_sujas == contagem["nome_sujo"]
+
+
+def test_injetar_defeitos_e_reprodutivel():
+    limpos = gerar_pedidos_limpos(100)
+
+    assert injetar_defeitos(limpos, seed=1) == injetar_defeitos(limpos, seed=1)

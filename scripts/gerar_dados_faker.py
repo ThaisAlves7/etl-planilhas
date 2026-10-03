@@ -39,7 +39,7 @@ FORMATOS_DATA_SUJA = [
     "%d/%m/%Y",
     "%d/%m/%y",
     "%Y/%m/%d",
-    "%m/%d/%Y",
+    # "%m/%d/%Y",
 ]
 
 FORMATOS_VALOR_SUJO = [
@@ -49,9 +49,17 @@ FORMATOS_VALOR_SUJO = [
     ("R$ ", False),  # R$ 1234,50
 ]
 
+FORMATOS_NOME_SUJO = [
+    "lower",  # maria silva
+    "upper",  # MARIA SILVA
+    "caixa_alternada",  # mArIa sIlVa,
+    "espacos_sobrando",  # Maria   Silva,
+]
+
 DEFEITOS = {
     "data_formato_misto": 0.05,
     "valor_com_rs_virgula": 0.10,
+    "nome_sujo": 0.15,
 }
 
 
@@ -109,10 +117,36 @@ def _sujar_valor(pedido: dict, rng: random.Random) -> None:
         pedido[campo] = prefixo + _formatar_brl(pedido[campo], com_milhar)
 
 
+def _sujar_nome(pedido: dict, rng: random.Random) -> None:
+    nome = pedido["cliente_nome"]
+    formato = rng.choice(FORMATOS_NOME_SUJO)
+
+    if formato == "lower":
+        nome = nome.lower()
+
+    elif formato == "upper":
+        nome = nome.upper()
+
+    elif formato == "caixa_alternada":
+        nome = "".join(
+            letra.upper() if rng.random() < 0.5 else letra.lower() for letra in nome
+        )
+
+    elif formato == "espacos_sobrando":
+        separador = " " * rng.randint(2, 4)
+        nome = (
+            " " * rng.randint(1, 2)
+            + separador.join(nome.split())
+            + " " * rng.randint(0, 2)
+        )
+
+    pedido["cliente_nome"] = nome
+
+
 APLICADORES = {
     "data_formato_misto": _sujar_data,
     "valor_com_rs_virgula": _sujar_valor,
-    # "nome_sujo": _sujar_nome,
+    "nome_sujo": _sujar_nome,
 }
 
 
@@ -160,8 +194,11 @@ def main() -> None:
     limpos = gerar_pedidos_limpos(200)
     sujos, defeitos = injetar_defeitos(limpos)
 
-    # salvar_csv(limpos, "data/sample/vendas_limpos.csv")
-    # salvar_xlsx(limpos, "data/sample/vendas_limpos.xlsx")
+    salvar_csv(limpos, "data/sample/vendas_limpos.csv")
+    salvar_xlsx(limpos, "data/sample/vendas_limpos.xlsx")
+
+    salvar_csv(sujos, "data/sample/vendas_sujos.csv")
+    salvar_xlsx(sujos, "data/sample/vendas_sujos.xlsx")
 
     print(defeitos)
 
