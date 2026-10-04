@@ -186,19 +186,12 @@ def salvar_csv(pedidos: list[dict], caminho: str) -> None:
         writer.writerows(pedidos)
 
 
-def salvar_xlsx(pedidos: list[dict], caminho: str) -> None:
-    """Só escreve. Título extra + segunda aba com lixo."""
-
-
 def main() -> None:
     limpos = gerar_pedidos_limpos(200)
     sujos, defeitos = injetar_defeitos(limpos)
 
     salvar_csv(limpos, "data/sample/vendas_limpos.csv")
-    salvar_xlsx(limpos, "data/sample/vendas_limpos.xlsx")
-
     salvar_csv(sujos, "data/sample/vendas_sujos.csv")
-    salvar_xlsx(sujos, "data/sample/vendas_sujos.xlsx")
 
     print(defeitos)
 

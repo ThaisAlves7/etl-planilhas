@@ -9,7 +9,6 @@ from scripts.gerar_dados_faker import (
     gerar_pedidos_limpos,
     injetar_defeitos,
     salvar_csv,
-    salvar_xlsx,
     FORMATOS_DATA_SUJA,
 )
 
