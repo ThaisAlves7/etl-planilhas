@@ -1,4 +1,4 @@
-from src.etl.extract.leitores import ler_csv
+from etl.extract.leitores import ler_csv
 
 
 def test_ler_csv_adiciona_linha_origem(tmp_path):
