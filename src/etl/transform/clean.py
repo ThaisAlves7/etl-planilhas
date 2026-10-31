@@ -12,7 +12,7 @@ def vazio_para_nulo(df: pd.DataFrame, colunas: list[str]) -> pd.DataFrame:
     return df
 
 
-def limpar_data(texto: str, formatos: list[str]) -> str | None:
+def limpar_data(texto: str, formatos: list[str]) -> date | None:
     """Converter texto em date tentando cada formato, na ordem recebida"""
     if texto is None or pd.isna(texto):
         return None
