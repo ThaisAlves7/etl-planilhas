@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 import pandas as pd
 
 from etl.transform.schema import separar
@@ -37,3 +39,18 @@ def test_separar_divide_validas_e_rejeitadas():
         ("3", "quantidade_invalida"),
         ("3", "total_inconsistente"),
     }
+
+
+@pytest.mark.parametrize(
+    "campo, valor, motivo",
+    [
+        ("data_pedido", date(2999, 1, 1), "data_futura"),
+        ("valor_unitario", Decimal("0.0"), "valor_unitario_invalido"),
+        ("quantidade", -1, "quantidade_invalida"),
+    ],
+)
+def test_cada_regra_rejeitada_com_o_motivo_certo(campo, valor, motivo):
+    df = _df_exemplo().iloc[[0]].copy()  # pedido 1, válido
+    df[campo] = valor
+    _, rejeitadas = separar(df)
+    assert motivo in set(rejeitadas["motivo_rejeicao"])
