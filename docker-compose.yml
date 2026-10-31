@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: etl
       POSTGRES_DB: vendas
     ports:
-      - "5433:5433"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
