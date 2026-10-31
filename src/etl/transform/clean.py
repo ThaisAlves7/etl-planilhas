@@ -1,6 +1,6 @@
-import pandas as pd
-
 from datetime import date, datetime
+
+import pandas as pd
 
 
 def vazio_para_nulo(df: pd.DataFrame, colunas: list[str]) -> pd.DataFrame:
