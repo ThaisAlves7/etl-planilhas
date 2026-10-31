@@ -10,6 +10,21 @@ MOTIVOS = {"not_nullable": "campo_obrigatorio_ausente"}
 
 REGEX_EMAIL = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
 
+
+def _total_confere(df: pd.DataFrame) -> pd.Series:
+    ok = df[["quantidade", "valor_unitario", "valor_total"]].notna().all(axis=1)
+    resultado = pd.Series(True, index=df.index)
+    resultado[ok] = (
+        df.loc[ok, "valor_total"]
+        == df.loc[ok, "quantidade"] * df.loc[ok, "valor_unitario"]
+    )
+
+    return resultado
+
+
+# no schema:
+checks = pa.Check(_total_confere, name="total_inconsistente")
+
 schema = pa.DataFrameSchema(
     {
         "numero_pedido": pa.Column(str, nullable=False, unique=True),
