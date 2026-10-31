@@ -15,7 +15,6 @@ from scripts.gerar_dados_faker import (
 
 def _ler_data_suja(texto: str):
     for formato in FORMATOS_DATA_SUJA:
-
         try:
             return datetime.datetime.strptime(texto, formato).date()
 

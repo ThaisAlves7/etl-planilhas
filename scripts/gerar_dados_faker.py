@@ -68,7 +68,6 @@ def gerar_pedidos_limpos(n: int) -> list[dict]:
     pedidos = []
 
     for _ in range(n):
-
         nome = fake.name()
         numero_pedido = fake.unique.numerify(text="#######")
 
