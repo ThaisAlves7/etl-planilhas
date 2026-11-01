@@ -50,3 +50,26 @@ def limpar_valor(texto: str | None) -> Decimal | None:
 
     except InvalidOperation:
         return None
+
+
+def limpar_nome(texto: str | None) -> str | None:
+    """Normaliza espaços e caixa do nome; devolve None se não houver nome."""
+    if texto is None or pd.isna(texto) or not isinstance(texto, str):
+        return None
+
+    nome = " ".join(texto.split()).title()
+
+    return nome or None
+
+"""
+PS D:\GitHub\etl-planilhas> docker compose run --rm app pytest -q tests/unit/test_clean.py
+[+] run 1/1
+ ✔ Container etl-planilhas-db-1 Running                                              0.0s
+Container etl-planilhas-db-1 Waiting
+Container etl-planilhas-db-1 Healthy
+Container etl-planilhas-app-run-165eb2b4dde1 Creating
+Container etl-planilhas-app-run-165eb2b4dde1 Created
+............................                                                      [100%]
+28 passed in 0.81s
+
+"""

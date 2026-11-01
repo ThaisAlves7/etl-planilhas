@@ -8,6 +8,7 @@ from etl.transform.clean import (  # pyright: ignore[reportMissingImports]
     vazio_para_nulo,
     limpar_data,
     limpar_valor,
+    limpar_nome,
 )
 
 FORMATOS = ["%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y/%m/%d"]
@@ -51,3 +52,25 @@ def test_limpar_valor_aceita_os_formatos_conhecidos(texto, esperado):
 @pytest.mark.parametrize("texto", ["abc", "R$", "", None, "12,3,4"])
 def test_limpar_valor_devolve_none_quando_nao_e_numero(texto):
     assert limpar_valor(texto) is None
+
+
+@pytest.mark.parametrize(
+    "texto, esperado",
+    [
+        ("  maria   silva ", "Maria Silva"),
+        ("DANIEL FONSECA", "Daniel Fonseca"),
+        ("mArIa sIlVa", "Maria Silva"),
+        ("Maria Silva", "Maria Silva"),
+    ],
+)
+def test_limpar_nome_normaliza_espacos_e_caixa(texto, esperado):
+    assert limpar_nome(texto) == esperado
+
+
+@pytest.mark.parametrize("texto", ["", "   ", None])
+def test_limpar_nome_devolve_none_quando_nao_ha_nome(texto):
+    assert limpar_nome(texto) is None
+
+def test_limpar_nome_usa_title_case_simples():
+  # Decisão partículas também recebem inicial maiúscula, igual ao gabarito do gerador
+    assert limpar_nome("  maria   silva ") == "Maria Silva"
