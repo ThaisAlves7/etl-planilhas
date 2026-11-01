@@ -4,14 +4,23 @@ from decimal import Decimal
 import pandas as pd
 import pytest
 
+from pathlib import Path
+
+from etl.extract.leitores import ler_csv
+
 from etl.transform.clean import (  # pyright: ignore[reportMissingImports]
     vazio_para_nulo,
     limpar_data,
     limpar_valor,
     limpar_nome,
+    limpar_inteiro,
+    limpar_pedidos,
 )
 
+
 FORMATOS = ["%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y/%m/%d"]
+
+AMOSTRA = Path(__file__).parents[2] / "data" / "sample"
 
 
 def test_vazio_e_espacos_viram_nulo():
@@ -71,6 +80,50 @@ def test_limpar_nome_normaliza_espacos_e_caixa(texto, esperado):
 def test_limpar_nome_devolve_none_quando_nao_ha_nome(texto):
     assert limpar_nome(texto) is None
 
+
 def test_limpar_nome_usa_title_case_simples():
-  # Decisão partículas também recebem inicial maiúscula, igual ao gabarito do gerador
+    # Decisão partículas também recebem inicial maiúscula, igual ao gabarito do gerador
     assert limpar_nome("  maria   silva ") == "Maria Silva"
+
+
+@pytest.mark.parametrize(
+    "texto, esperado",
+    [("2", 2), (" 3 ", 3), ("2.5", None), ("abc", None), ("", None), (None, None)],
+)
+def test_limpar_inteiro(texto, esperado):
+    assert limpar_inteiro(texto) == esperado
+
+
+def test_limpar_pedidos_recupera_o_gabarito():
+    sujo = limpar_pedidos(ler_csv(str(AMOSTRA / "vendas_sujos.csv")), FORMATOS)
+    limpo = limpar_pedidos(ler_csv(str(AMOSTRA / "vendas_limpos.csv")), FORMATOS)
+
+    pd.testing.assert_frame_equal(sujo, limpo)
+
+
+def test_limpar_pedidos_aplica_todas_as_regras():
+    bruto = pd.DataFrame(
+        {
+            "numero_pedido": ["1"],
+            "data_pedido": ["05/03/26"],
+            "cliente_nome": ["  maria   SILVA "],
+            "cliente_email": ["ana@example.com"],
+            "produto": ["SSD"],
+            "quantidade": ["2"],
+            "valor_unitario": ["R$ 10,00"],
+            "valor_total": ["R$ 20,00"],
+        }
+    )
+
+    limpo = limpar_pedidos(bruto, formatos_data=FORMATOS)
+
+    assert bruto.loc[0, "data_pedido"] == "05/03/26"  # O bruto continua intacto
+
+    assert limpo.loc[0, "data_pedido"] == date(2026, 3, 5)
+    assert limpo.loc[0, "cliente_nome"] == "Maria Silva"
+    assert limpo.loc[0, "quantidade"] == 2
+    assert limpo.loc[0, "valor_unitario"] == Decimal("10.00")
+    assert limpo.loc[0, "valor_total"] == Decimal("20.00")
+
+    assert str(limpo["quantidade"].dtype) == "Int64"
+    assert bruto.loc[0, "data_pedido"] == "05/03/26"  # o bruto continua como veio

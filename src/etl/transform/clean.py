@@ -61,15 +61,32 @@ def limpar_nome(texto: str | None) -> str | None:
 
     return nome or None
 
-"""
-PS D:\GitHub\etl-planilhas> docker compose run --rm app pytest -q tests/unit/test_clean.py
-[+] run 1/1
- ✔ Container etl-planilhas-db-1 Running                                              0.0s
-Container etl-planilhas-db-1 Waiting
-Container etl-planilhas-db-1 Healthy
-Container etl-planilhas-app-run-165eb2b4dde1 Creating
-Container etl-planilhas-app-run-165eb2b4dde1 Created
-............................                                                      [100%]
-28 passed in 0.81s
 
-"""
+def limpar_inteiro(texto: str | None) -> int | None:
+    """Converte texto em inteiro; devolve None se não houver inteiro."""
+    if texto is None or pd.isna(texto):
+        return None
+
+    try:
+        return int(texto.strip())
+
+    except ValueError:
+        return None
+
+
+def limpar_pedidos(df: pd.DataFrame, formatos_data: list[str]) -> pd.DataFrame:
+    df = df.copy()  # O bruto precisa ficar intacto
+
+    # 1) Vazio -> Nulo nas colunas de texto
+    df = vazio_para_nulo(
+        df, ["numero_pedido", "cliente_nome", "cliente_email", "produto"]
+    )
+
+    # 2) Cada coluna recebe sua função de limpeza
+    df["data_pedido"] = df["data_pedido"].apply(lambda x: limpar_data(x, formatos_data))
+    df["cliente_nome"] = df["cliente_nome"].apply(limpar_nome)
+    df["quantidade"] = df["quantidade"].apply(limpar_inteiro).astype("Int64")
+    df["valor_unitario"] = df["valor_unitario"].apply(limpar_valor)
+    df["valor_total"] = df["valor_total"].apply(limpar_valor)
+
+    return df
