@@ -17,7 +17,7 @@ def carregar_vendas(df: pd.DataFrame, engine: Engine) -> None:
         for i in range(0, len(registros), TAMANHO_LOTE):
             lote = registros[i : i + TAMANHO_LOTE]
 
-            stmt = insert(vendas).values(registros)
+            stmt = insert(vendas).values(lote)
             stmt = stmt.on_conflict_do_update(
                 index_elements=["numero_pedido"],
                 set_={
