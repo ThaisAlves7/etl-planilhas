@@ -4,7 +4,7 @@ from decimal import Decimal
 import pandas as pd
 from sqlalchemy import func, select
 
-from etl.load.loader import carregar_vendas
+from etl.load.loader import carregar_vendas  # pyright: ignore[reportMissingImports]
 from etl.load.tables import vendas
 
 
@@ -45,3 +45,23 @@ def test_reprocessar_atualiza_a_linha_existente(db):
         ).scalar()
 
     assert total == Decimal("25.00")
+
+
+def test_carrega_arquivo_grande_em_lotes(db):
+    n = 10_000
+    df = pd.DataFrame(
+        {
+            "numero_pedido": [str(i) for i in range(n)],
+            "data_pedido": [date(2026, 1, 10)] * n,
+            "cliente_nome": ["Ana Souza"] * n,
+            "cliente_email": ["ana@example.com"] * n,
+            "produto": ["SSD"] * n,
+            "quantidade": pd.array([2] * n, dtype="Int64"),
+            "valor_unitario": [Decimal("10.00")] * n,
+            "valor_total": [Decimal("20.00")] * n,
+        }
+    )
+
+    carregar_vendas(df, db)
+
+    assert _contar(db) == n
