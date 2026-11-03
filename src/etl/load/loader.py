@@ -9,10 +9,15 @@ TAMANHO_LOTE = 1000
 
 
 def carregar_vendas(df: pd.DataFrame, engine: Engine) -> None:
+    duplicados = df["numero_pedido"][df["numero_pedido"].duplicated()]
+    if not duplicados.empty:
+        exemplos = ", ".join(duplicados.unique()[:5])
+        raise ValueError(f"numero_pedido repetido no arquivo: {exemplos}")
+    
     registros = df[[c.name for c in vendas.columns]].to_dict("records")
+
     if not registros:
         return
-
     with engine.begin() as conn:
         for i in range(0, len(registros), TAMANHO_LOTE):
             lote = registros[i : i + TAMANHO_LOTE]

@@ -2,6 +2,7 @@ from datetime import date
 from decimal import Decimal
 
 import pandas as pd
+import pytest
 from sqlalchemy import func, select
 
 from etl.load.loader import carregar_vendas  # pyright: ignore[reportMissingImports]
@@ -65,3 +66,13 @@ def test_carrega_arquivo_grande_em_lotes(db):
     carregar_vendas(df, db)
 
     assert _contar(db) == n
+
+
+def test_chave_repetida_no_arquivo_e_recusada_sem_gravar_nada(db):
+    df = _df()
+    df = pd.concat([df, df.iloc[[0]]], ignore_index=True)  # repete o pedido "1"
+
+    with pytest.raises(ValueError, match="numero_pedido"):
+        carregar_vendas(df, db)
+
+    assert _contar(db) == 0
