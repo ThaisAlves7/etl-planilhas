@@ -76,3 +76,8 @@ def test_chave_repetida_no_arquivo_e_recusada_sem_gravar_nada(db):
         carregar_vendas(df, db)
 
     assert _contar(db) == 0
+
+
+def test_carregar_devolve_inseridas_e_atualizadas(db):
+    assert carregar_vendas(_df(), db) == (3, 0)
+    assert carregar_vendas(_df(valor_total="25.00"), db) == (0, 3)
