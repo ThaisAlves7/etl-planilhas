@@ -5,9 +5,12 @@ from sqlalchemy import func, select
 
 from etl.load.tables import ingestion_runs, rejected_rows, vendas
 from etl.pipeline import executar
+from etl.config import ConfigFonte, carregar_config
+
+CONFIG = Path(__file__).parents[2] / "config" / "vendas.yaml"
+CFG = carregar_config(str(CONFIG))
 
 AMOSTRA = Path(__file__).parents[2] / "data" / "sample" / "vendas_sujos.csv"
-FORMATOS = ["%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y/%m/%d"]
 
 
 def _contar(db, tabela):
@@ -16,7 +19,7 @@ def _contar(db, tabela):
 
 
 def test_primeira_execucao_carrega_o_arquivo_sujo_inteiro(db):
-    r = executar(str(AMOSTRA), db, FORMATOS)
+    r = executar(str(AMOSTRA), db, CFG)
 
     assert r.status == "sucesso"
     assert (r.lidas, r.validas, r.rejeitadas) == (200, 200, 0)
@@ -25,8 +28,8 @@ def test_primeira_execucao_carrega_o_arquivo_sujo_inteiro(db):
 
 
 def test_segunda_execucao_do_mesmo_arquivo_e_ignorada(db):
-    executar(str(AMOSTRA), db, FORMATOS)
-    r = executar(str(AMOSTRA), db, FORMATOS)
+    executar(str(AMOSTRA), db, CFG)
+    r = executar(str(AMOSTRA), db, CFG)
 
     assert r.status == "ignorado"
     assert _contar(db, vendas) == 200
@@ -34,8 +37,8 @@ def test_segunda_execucao_do_mesmo_arquivo_e_ignorada(db):
 
 
 def test_force_reprocessa_sem_duplicar(db):
-    executar(str(AMOSTRA), db, FORMATOS)
-    r = executar(str(AMOSTRA), db, FORMATOS, force=True)
+    executar(str(AMOSTRA), db, CFG)
+    r = executar(str(AMOSTRA), db, CFG, force=True)
 
     assert (r.inseridas, r.atualizadas) == (0, 200)
     assert _contar(db, vendas) == 200
@@ -54,7 +57,7 @@ def test_linhas_invalidas_vao_para_a_quarentena(db, tmp_path):
     arquivo = tmp_path / "com_erros.csv"
     arquivo.write_text(CSV_COM_ERROS, encoding="latin-1")
 
-    r = executar(str(arquivo), db, FORMATOS)
+    r = executar(str(arquivo), db, CFG)
 
     assert (r.lidas, r.validas, r.rejeitadas, r.inseridas) == (3, 1, 2, 1)
     assert r.validas + r.rejeitadas == r.lidas
@@ -72,10 +75,29 @@ def test_falha_registra_a_execucao_e_repassa_o_erro(db, tmp_path):
     arquivo.write_text("numero_pedido;produto\n1;SSD\n", encoding="latin-1")
 
     with pytest.raises(KeyError):
-        executar(str(arquivo), db, FORMATOS)
+        executar(str(arquivo), db, CFG)
 
     with db.begin() as conn:
         run = conn.execute(select(ingestion_runs)).one()
     assert run.status == "falha"
     assert run.mensagem_erro
     assert run.finalizado_em is not None
+
+
+def test_usa_encoding_e_delimitador_da_configuracao(db, tmp_path):
+    arquivo = tmp_path / "utf8.csv"
+    arquivo.write_text(
+        "numero_pedido,data_pedido,cliente_nome,cliente_email,produto,quantidade,valor_unitario,valor_total\n"
+        "1,2026-01-10,José Ângelo,jose@example.com,SSD,2,10.00,20.00\n",
+        encoding="utf-8",
+    )
+    cfg = ConfigFonte(
+        encoding="utf-8", delimitador=",", formatos_data=CFG.formatos_data
+    )
+
+    r = executar(str(arquivo), db, cfg)
+
+    assert r.inseridas == 1
+    with db.begin() as conn:
+        nome = conn.execute(select(vendas.c.cliente_nome)).scalar()
+    assert nome == "José Ângelo"

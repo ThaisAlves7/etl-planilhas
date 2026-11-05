@@ -15,6 +15,7 @@ from etl.load.runs import (
 )
 from etl.transform.clean import limpar_pedidos
 from etl.transform.schema import separar
+from etl.config import ConfigFonte
 
 
 @dataclass(frozen=True)
@@ -31,20 +32,20 @@ class ResultadoExecucao:
 def executar(
     caminho: str,
     engine: Engine,
-    formatos_data: list[str],
+    cfg: ConfigFonte,
     *,
     force: bool = False,
 ) -> ResultadoExecucao:
     arquivo_hash = calcular_hash(caminho)
 
-    if ja_processado(engine, arquivo_hash) and not force:
+    if not force and ja_processado(engine, arquivo_hash):
         return ResultadoExecucao(status="ignorado", run_id=None)
 
     run_id = iniciar_execucao(engine, Path(caminho).name, arquivo_hash)
-    
+
     try:
-        bruto = ler_csv(caminho)
-        limpo = limpar_pedidos(bruto, formatos_data)
+        bruto = ler_csv(caminho, delimitador=cfg.delimitador, encoding=cfg.encoding)
+        limpo = limpar_pedidos(bruto, cfg.formatos_data)
         validas, rejeitadas = separar(limpo)
 
         gravar_rejeicoes(engine, run_id, rejeitadas, bruto)
@@ -53,6 +54,7 @@ def executar(
         lidas = len(bruto)
         n_validas = len(validas)
         n_rejeitadas = lidas - n_validas
+
         finalizar_execucao(
             engine,
             run_id,
