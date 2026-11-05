@@ -1,0 +1,9 @@
+# Formatos de data aceitos, tentados NA ORDEM. A ordem define a regra
+# "dia primeiro" para datas ambíguas como 05/03/2026.
+encoding: latin-1
+delimitador: ";"
+formatos_data:
+  - "%Y-%m-%d"
+  - "%d/%m/%Y"
+  - "%d/%m/%y"
+  - "%Y/%m/%d"
