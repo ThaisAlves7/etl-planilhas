@@ -1,6 +1,6 @@
 from etl.load.tables import ingestion_runs
 from sqlalchemy.engine import Engine
-from sqlalchemy import func, insert, update
+from sqlalchemy import func, insert, select, update
 
 
 def iniciar_execucao(engine: Engine, nome_arquivo: str, arquivo_hash: str) -> int:
@@ -37,12 +37,27 @@ def finalizar_execucao(
         )
     )
     with engine.begin() as conn:
-        return conn.execute(stmt).scalar_one()
+        conn.execute(stmt)
 
 
-def falhar_execucao():
-    return
+def falhar_execucao(engine: Engine, run_id: int, mensagem_erro: str) -> None:
+    stmt = (
+        update(ingestion_runs)
+        .where(ingestion_runs.c.id == run_id)
+        .values(status="falha", mensagem_erro=mensagem_erro, finalizado_em=func.now())
+    )
+    with engine.begin() as conn:
+        return conn.execute(stmt)
 
 
-def ja_processado():
-    return
+def ja_processado(engine: Engine, arquivo_hash: str) -> bool:
+    stmt = (
+        select(ingestion_runs.c.id)
+        .where(
+            ingestion_runs.c.arquivo_hash == arquivo_hash,
+            ingestion_runs.c.status == "sucesso",
+        )
+        .limit(1)
+    )
+    with engine.begin() as conn:
+        return conn.execute(stmt).first() is not None
