@@ -19,6 +19,7 @@ def _df_exemplo() -> pd.DataFrame:
             "quantidade": [2, 1, 0],
             "valor_unitario": [Decimal("10.00"), Decimal("5.00"), Decimal("7.00")],
             "valor_total": [Decimal("20.00"), Decimal("5.00"), Decimal("99.00")],
+            "linha_origem": [2, 3, 4],
         }
     )
 
@@ -54,3 +55,10 @@ def test_cada_regra_rejeitada_com_o_motivo_certo(campo, valor, motivo):
     df[campo] = valor
     _, rejeitadas = separar(df)
     assert motivo in set(rejeitadas["motivo_rejeicao"])
+
+
+def test_rejeitadas_trazem_a_linha_de_origem():
+    _, rejeitadas = separar(_df_exemplo())
+
+    linhas = dict(zip(rejeitadas["numero_pedido"], rejeitadas["linha_origem"]))
+    assert linhas["2"] == 3  # o pedido "2" está na linha 3 da planilha

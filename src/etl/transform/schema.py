@@ -7,6 +7,7 @@ from pandera.errors import SchemaErrors
 
 
 MOTIVOS = {"not_nullable": "campo_obrigatorio_ausente"}
+COLUNAS_REJEITADAS = ["linha_origem", "numero_pedido", "motivo_rejeicao"]
 
 REGEX_EMAIL = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
 
@@ -86,7 +87,7 @@ def separar(df):
 
         return (
             df,
-            pd.DataFrame(columns=["numero_pedido", "motivo_rejeicao"]),
+            pd.DataFrame(columns=COLUNAS_REJEITADAS),
         )
 
     except SchemaErrors as e:
@@ -97,10 +98,13 @@ def separar(df):
         raise ValueError(f"Problema estrutural nos dados:\n{estruturais}")
 
     pares = falhas[["index", "check"]].drop_duplicates().astype({"index": int})
+
+    pares = falhas[["index", "check"]].drop_duplicates().astype({"index": int})
     pares["motivo_rejeicao"] = pares["check"].map(lambda c: MOTIVOS.get(c, c))
     pares["numero_pedido"] = df.loc[pares["index"], "numero_pedido"].to_numpy()
+    pares["linha_origem"] = df.loc[pares["index"], "linha_origem"].to_numpy()
 
-    rejeitadas = pares[["numero_pedido", "motivo_rejeicao"]].reset_index(drop=True)
+    rejeitadas = pares[COLUNAS_REJEITADAS].reset_index(drop=True)
     validas = df[~df.index.isin(pares["index"])]
 
     return validas, rejeitadas
