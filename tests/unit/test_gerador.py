@@ -8,6 +8,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from scripts.gerar_dados_faker import (
     gerar_pedidos_limpos,
     injetar_defeitos,
+    injetar_rejeitaveis,
     salvar_csv,
     FORMATOS_DATA_SUJA,
 )
@@ -119,3 +120,14 @@ def test_injetar_defeitos_e_reprodutivel():
     limpos = gerar_pedidos_limpos(100)
 
     assert injetar_defeitos(limpos, seed=1) == injetar_defeitos(limpos, seed=1)
+
+
+def test_rejeitaveis_geram_uma_esperada_por_linha_alterada():
+    limpos = gerar_pedidos_limpos(300)
+    sujos, esperadas = injetar_rejeitaveis(limpos)
+
+    numeros = [e["numero_pedido"] for e in esperadas]
+    assert len(numeros) == len(set(numeros))  # nenhuma linha duplicada
+    
+    alteradas = [s for s, l in zip(sujos, limpos) if s != l]
+    assert len(alteradas) == len(esperadas)  # só o que foi anotado mudou

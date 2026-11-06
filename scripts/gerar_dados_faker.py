@@ -62,6 +62,55 @@ DEFEITOS = {
     "nome_sujo": 0.15,
 }
 
+DEFEITOS_REJEITAVEIS = {
+    "email_invalido": 0.03,
+    "total_inconsistente": 0.03,
+    # "quantidade_invalida": 0.03,
+    # "campo_obrigatorio_ausente": 0.03,
+}
+
+
+def _email_invalidos(pedido: dict, rng: random.Random) -> None:
+    pedido["cliente_email"] = pedido["cliente_email"].replace("@", "#")
+
+
+def _total_inconsistente(pedido: dict, rng: random.Random) -> None:
+    pedido["valor_total"] += Decimal("1.00")
+
+
+APLICADORES_REJEITAVEIS = {
+    "email_invalido": _email_invalidos,
+    "total_inconsistente": _total_inconsistente,
+}
+
+
+def injetar_rejeitaveis(pedidos, seed=7):
+    """Devolve (pedidos_com_defeito, esperadas)"""
+
+    rng = random.Random(seed)
+    sujos = copy.deepcopy(pedidos)
+    esperadas: list[dict] = []
+
+    indices = list(range(len(sujos)))
+    rng.shuffle(indices)
+    inicio = 0
+
+    # Obter os defeitos a serem usados para "sujar" os dados
+    for motivo, fracao in DEFEITOS_REJEITAVEIS.items():
+        k = round(len(sujos) * fracao)
+        bloco = indices[inicio : inicio + k]
+        inicio += k
+
+        # Chamar a função que vai realizar o "sujeira" dos dados
+        aplicar = APLICADORES_REJEITAVEIS[motivo]
+        for i in bloco:
+            aplicar(sujos[i], rng)
+            esperadas.append(
+                {"numero_pedido": sujos[i]["numero_pedido"], "motivo_rejeicao": motivo}
+            )
+
+    return sujos, esperadas
+
 
 def gerar_pedidos_limpos(n: int) -> list[dict]:
     """Devolve n pedidos válidos. Sem I/O."""
