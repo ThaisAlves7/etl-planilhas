@@ -17,7 +17,7 @@ def principal() -> None:
 
 
 def _engine():
-    url = os.environ["DATABASE_URL"]
+    url = os.environ.get("DATABASE_URL")
 
     if not url:
         typer.echo("Erro: defina a variável de ambiente DATABASE_URL", err=True)
