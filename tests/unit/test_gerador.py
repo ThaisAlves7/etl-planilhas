@@ -128,6 +128,13 @@ def test_rejeitaveis_geram_uma_esperada_por_linha_alterada():
 
     numeros = [e["numero_pedido"] for e in esperadas]
     assert len(numeros) == len(set(numeros))  # nenhuma linha duplicada
-    
+
     alteradas = [s for s, l in zip(sujos, limpos) if s != l]
     assert len(alteradas) == len(esperadas)  # só o que foi anotado mudou
+
+
+def test_salvar_csv_aceita_colunas_proprias(tmp_path):
+    caminho = tmp_path / "x.csv"
+    salvar_csv([{"a": "1", "b": "2"}], caminho, fieldnames=["a", "b"])
+
+    assert caminho.read_text(encoding="latin-1").splitlines() == ["a;b", "1;2"]

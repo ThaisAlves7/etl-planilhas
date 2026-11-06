@@ -1,3 +1,4 @@
+from collections import Counter
 import random
 import pandas as pd
 import csv
@@ -239,10 +240,11 @@ def injetar_defeitos(
     return sujos, contagem
 
 
-def salvar_csv(pedidos: list[dict], caminho: str) -> None:
+def salvar_csv(pedidos: list[dict], caminho: str, fieldnames=headers) -> None:
     """Só escreve. Latin-1, separador ';'."""
     with open(caminho, "w", newline="", encoding="latin-1") as f:
-        writer = csv.DictWriter(f, fieldnames=headers, delimiter=";")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=";")
+
         writer.writeheader()
         writer.writerows(pedidos)
 
@@ -251,10 +253,21 @@ def main() -> None:
     limpos = gerar_pedidos_limpos(200)
     sujos, defeitos = injetar_defeitos(limpos)
 
+    com_rejeitaveis, esperadas = injetar_rejeitaveis(limpos)
+    com_erros, _ = injetar_defeitos(com_rejeitaveis)
+
     salvar_csv(limpos, "data/sample/vendas_limpos.csv")
     salvar_csv(sujos, "data/sample/vendas_sujos.csv")
 
+    salvar_csv(com_erros, "data/sample/vendas_com_erros.csv")
+    salvar_csv(
+        esperadas,
+        "data/sample/rejeicoes_esperadas.csv",
+        fieldnames=["numero_pedido", "motivo_rejeicao"],
+    )
+
     print(defeitos)
+    print(dict(Counter(e["motivo_rejeicao"] for e in esperadas)))
 
 
 if __name__ == "__main__":
