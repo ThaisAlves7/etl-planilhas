@@ -65,8 +65,8 @@ DEFEITOS = {
 DEFEITOS_REJEITAVEIS = {
     "email_invalido": 0.03,
     "total_inconsistente": 0.03,
-    # "quantidade_invalida": 0.03,
-    # "campo_obrigatorio_ausente": 0.03,
+    "quantidade_invalida": 0.03,
+    "campo_obrigatorio_ausente": 0.03,
 }
 
 
@@ -78,9 +78,22 @@ def _total_inconsistente(pedido: dict, rng: random.Random) -> None:
     pedido["valor_total"] += Decimal("1.00")
 
 
+def _quantidade_invalida(pedido: dict, rng: random.Random) -> None:
+    pedido["quantidade"] = 0
+    pedido["valor_total"] = Decimal(
+        "0.00"
+    )  # 0 x preço = 0: o total continua consistente
+
+
+def _campo_ausente(pedido: dict, rng: random.Random) -> None:
+    pedido["cliente_nome"] = ""
+
+
 APLICADORES_REJEITAVEIS = {
     "email_invalido": _email_invalidos,
     "total_inconsistente": _total_inconsistente,
+    "quantidade_invalida": _quantidade_invalida,
+    "campo_obrigatorio_ausente": _campo_ausente,
 }
 
 
