@@ -16,3 +16,21 @@ def ler_csv(
 
     df["linha_origem"] = df.index + 2  # índice 0 = linha 2 (a linha 1 é o cabeçalho)
     return df
+
+
+def ler_excel(
+    caminho: str,
+    nome_aba: str,
+    linhas_antes_do_cabecalho: int = 0,
+) -> pd.DataFrame:
+
+    df = pd.read_excel(
+        caminho,
+        sheet_name=nome_aba,
+        header=linhas_antes_do_cabecalho,
+        dtype=str,
+        keep_default_na=False,
+    )
+    df["linha_origem"] = df.index + linhas_antes_do_cabecalho + 2
+
+    return df
