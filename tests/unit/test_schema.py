@@ -1,9 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
-import pytest
-
 import pandas as pd
+import pytest
 
 from etl.transform.schema import separar
 

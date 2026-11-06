@@ -1,6 +1,7 @@
-from etl.load.tables import ingestion_runs
-from sqlalchemy.engine import Engine
 from sqlalchemy import func, insert, select, update
+from sqlalchemy.engine import Engine
+
+from etl.load.tables import ingestion_runs
 
 
 def iniciar_execucao(engine: Engine, nome_arquivo: str, arquivo_hash: str) -> int:

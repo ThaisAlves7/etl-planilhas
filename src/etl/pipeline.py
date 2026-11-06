@@ -3,6 +3,7 @@ from pathlib import Path
 
 from sqlalchemy.engine import Engine
 
+from etl.config import ConfigFonte
 from etl.extract.arquivo import calcular_hash
 from etl.extract.leitores import ler_csv
 from etl.load.loader import carregar_vendas
@@ -15,7 +16,6 @@ from etl.load.runs import (
 )
 from etl.transform.clean import limpar_pedidos
 from etl.transform.schema import separar
-from etl.config import ConfigFonte
 
 
 @dataclass(frozen=True)

@@ -1,16 +1,16 @@
-import pytest
-
 import csv
 import datetime
 from datetime import date, timedelta
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
+
+import pytest
 
 from scripts.gerar_dados_faker import (
+    FORMATOS_DATA_SUJA,
     gerar_pedidos_limpos,
     injetar_defeitos,
     injetar_rejeitaveis,
     salvar_csv,
-    FORMATOS_DATA_SUJA,
 )
 
 

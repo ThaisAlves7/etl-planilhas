@@ -3,9 +3,9 @@ from pathlib import Path
 import pytest
 from sqlalchemy import func, select
 
+from etl.config import ConfigFonte, carregar_config
 from etl.load.tables import ingestion_runs, rejected_rows, vendas
 from etl.pipeline import executar
-from etl.config import ConfigFonte, carregar_config
 
 CONFIG = Path(__file__).parents[2] / "config" / "vendas.yaml"
 CFG = carregar_config(str(CONFIG))

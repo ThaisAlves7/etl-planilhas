@@ -1,11 +1,10 @@
-from collections import Counter
-import random
-import pandas as pd
-import csv
 import copy
+import csv
+import random
+from collections import Counter
+from decimal import ROUND_HALF_UP, Decimal
 
 from faker import Faker
-from decimal import ROUND_HALF_UP, Decimal
 
 fake = Faker("pt_BR")
 Faker.seed(42)

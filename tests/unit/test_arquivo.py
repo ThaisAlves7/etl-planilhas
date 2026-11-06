@@ -1,4 +1,5 @@
 import hashlib
+
 from etl.extract.arquivo import calcular_hash
 
 

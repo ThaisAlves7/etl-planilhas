@@ -1,5 +1,4 @@
 import pandas as pd
-
 from sqlalchemy import literal_column
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Engine

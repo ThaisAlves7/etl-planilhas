@@ -30,29 +30,26 @@ def test_vendas_valida_e_gravando(db):
 
 @pytest.mark.parametrize(
     "alteracao",
-    [{"quantidade": 0}, {"valor_unitario": Decimal("0")}, {"cliente_nome": None}],
+    [{"quantidade": 0}, {"valor_unitario": Decimal(0)}, {"cliente_nome": None}],
 )
 def test_banco_recusa_venda_invalida(db, alteracao):
-    with pytest.raises(IntegrityError):
-        with db.begin() as conn:
-            conn.execute(vendas.insert().values(**_vendas(**alteracao)))
+    with pytest.raises(IntegrityError), db.begin() as conn:
+        conn.execute(vendas.insert().values(**_vendas(**alteracao)))
 
 
 def test_banco_recusa_status_invalido(db):
-    with pytest.raises(IntegrityError):
-        with db.begin() as conn:
-            conn.execute(
-                ingestion_runs.insert().values(
-                    nome_arquivo="a.csv", arquivo_hash="abc", status="sucess"
-                )
+    with pytest.raises(IntegrityError), db.begin() as conn:
+        conn.execute(
+            ingestion_runs.insert().values(
+                nome_arquivo="a.csv", arquivo_hash="abc", status="sucess"
             )
+        )
 
 
 def test_banco_recusa_rejeicao_sem_execucao(db):
-    with pytest.raises(IntegrityError):
-        with db.begin() as conn:
-            conn.execute(
-                rejected_rows.insert().values(
-                    linha_origem=2, motivo_rejeicao="email_invalido", payload={}
-                )
+    with pytest.raises(IntegrityError), db.begin() as conn:
+        conn.execute(
+            rejected_rows.insert().values(
+                linha_origem=2, motivo_rejeicao="email_invalido", payload={}
             )
+        )

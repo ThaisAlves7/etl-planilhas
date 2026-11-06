@@ -1,10 +1,8 @@
 from datetime import date
-from decimal import Decimal
 
 import pandas as pd
 import pandera.pandas as pa
 from pandera.errors import SchemaErrors
-
 
 MOTIVOS = {"not_nullable": "campo_obrigatorio_ausente"}
 COLUNAS_REJEITADAS = ["linha_origem", "numero_pedido", "motivo_rejeicao"]
