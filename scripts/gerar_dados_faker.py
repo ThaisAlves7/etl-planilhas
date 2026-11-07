@@ -5,6 +5,7 @@ from collections import Counter
 from decimal import ROUND_HALF_UP, Decimal
 
 from faker import Faker
+from openpyxl import Workbook
 
 fake = Faker("pt_BR")
 Faker.seed(42)
@@ -246,6 +247,23 @@ def salvar_csv(pedidos: list[dict], caminho: str, fieldnames=headers) -> None:
 
         writer.writeheader()
         writer.writerows(pedidos)
+
+
+def salvar_xlsx(pedidos: list[dict], caminho: str, nome_aba: str = "Vendas") -> None:
+    wb = Workbook()
+    ws = wb.active
+    ws.title = nome_aba
+
+    ws.append(["Relatório de vendas"])
+    ws.append(["Gerado pelo sistema legado"])
+    ws.append(headers)
+
+    # Preencher dados da planilha
+    for pedido in pedidos:
+        ws.append([pedido[campo] for campo in headers])
+
+    wb.create_sheet("Lixo").append(["aba sem dados úteis"])
+    wb.save(caminho)
 
 
 def main() -> None:

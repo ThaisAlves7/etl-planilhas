@@ -4,13 +4,16 @@ from datetime import date, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
+from openpyxl import load_workbook
 
+from etl.extract.leitores import ler_excel
 from scripts.gerar_dados_faker import (
     FORMATOS_DATA_SUJA,
     gerar_pedidos_limpos,
     injetar_defeitos,
     injetar_rejeitaveis,
     salvar_csv,
+    salvar_xlsx,
 )
 
 
@@ -138,3 +141,17 @@ def test_salvar_csv_aceita_colunas_proprias(tmp_path):
     salvar_csv([{"a": "1", "b": "2"}], caminho, fieldnames=["a", "b"])
 
     assert caminho.read_text(encoding="latin-1").splitlines() == ["a;b", "1;2"]
+
+
+def test_salvar_xlsx_gerar_titulos_cabecalho_e_aba_extra(tmp_path):
+    pedidos = gerar_pedidos_limpos(3)
+    caminho = tmp_path / "vendas.xlsx"
+
+    salvar_xlsx(pedidos, str(caminho))
+
+    assert load_workbook(caminho).sheetnames == ["Vendas", "Lixo"]
+    df = ler_excel(str(caminho), nome_aba="Vendas", linhas_antes_do_cabecalho=2)
+
+    assert len(df) == 3
+    assert list(df["linha_origem"]) == [4, 5, 6]
+    assert df.loc[0, "numero_pedido"] == pedidos[0]["numero_pedido"]
