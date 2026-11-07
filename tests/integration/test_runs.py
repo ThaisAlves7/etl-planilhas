@@ -8,13 +8,13 @@ from etl.load.runs import (
 )
 from etl.load.tables import ingestion_runs
 
-CONTADORES = dict(
-    lidas=200,
-    validas=190,
-    rejeitadas=10,
-    inseridas=190,
-    atualizadas=0,
-)
+CONTADORES = {
+    "lidas": 200,
+    "validas": 190,
+    "rejeitadas": 10,
+    "inseridas": 190,
+    "atualizadas": 0,
+}
 
 
 def _run(db, run_id):

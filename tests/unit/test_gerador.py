@@ -43,7 +43,7 @@ def test_valor_total_bate_com_quantidade_vezes_unitario():
 
 def test_numero_pedido_e_unico():
     pedidos = gerar_pedidos_limpos(200)
-    assert len(pedidos) == len(set(p["numero_pedido"] for p in pedidos))
+    assert len(pedidos) == len({p["numero_pedido"] for p in pedidos})
 
 
 def test_data_pedido_nao_e_futura_e_esta_na_janela():
