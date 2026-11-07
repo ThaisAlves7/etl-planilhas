@@ -4,7 +4,10 @@ import pandas as pd
 import pandera.pandas as pa
 from pandera.errors import SchemaErrors
 
-MOTIVOS = {"not_nullable": "campo_obrigatorio_ausente"}
+MOTIVOS = {
+    "not_nullable": "campo_obrigatorio_ausente",
+    "field_uniqueness": "numero_pedido_repetido",
+}
 COLUNAS_REJEITADAS = ["linha_origem", "numero_pedido", "motivo_rejeicao"]
 
 REGEX_EMAIL = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"

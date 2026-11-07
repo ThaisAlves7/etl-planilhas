@@ -61,3 +61,13 @@ def test_rejeitadas_trazem_a_linha_de_origem():
 
     linhas = dict(zip(rejeitadas["numero_pedido"], rejeitadas["linha_origem"]))
     assert linhas["2"] == 3  # o pedido "2" está na linha 3 da planilha
+
+
+def test_numero_pedido_repetido_e_rejeitado_com_motivo_proprio():
+    base = _df_exemplo().iloc[[0]]
+    df = pd.concat([base, base], ignore_index=True)
+
+    _, rejeitadas = separar(df)
+
+    assert set(rejeitadas["motivo_rejeicao"]) == {"numero_pedido_repetido"}
+    assert len(rejeitadas) == 2  # as duas ocorrências
