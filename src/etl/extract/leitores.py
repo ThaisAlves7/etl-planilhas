@@ -1,6 +1,8 @@
 from pathlib import Path
-from etl.config import ConfigFonte
+
 import pandas as pd
+
+from etl.config import ConfigFonte
 
 
 def ler_csv(

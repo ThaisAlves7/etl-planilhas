@@ -1,5 +1,7 @@
+from datetime import datetime
 from pathlib import Path
 
+import pandas as pd
 import pytest
 from sqlalchemy import func, select
 
@@ -101,3 +103,50 @@ def test_usa_encoding_e_delimitador_da_configuracao(db, tmp_path):
     with db.begin() as conn:
         nome = conn.execute(select(vendas.c.cliente_nome)).scalar()
     assert nome == "José Ângelo"
+
+
+def test_executar_le_planilha_excel(db, tmp_path):
+    arquivo = tmp_path / "vendas.xlsx"
+    cabecalho = [
+        "numero_pedido",
+        "data_pedido",
+        "cliente_nome",
+        "cliente_email",
+        "produto",
+        "quantidade",
+        "valor_unitario",
+        "valor_total",
+    ]
+    linhas = [
+        ["Relatório de vendas"] + [None] * 7,
+        ["gerado hoje"] + [None] * 7,
+        cabecalho,
+        [
+            "1",
+            datetime(2026, 1, 10),
+            "Ana Souza",
+            "ana@example.com",
+            "SSD",
+            2,
+            10.0,
+            20.0,
+        ],
+    ]
+    
+    with pd.ExcelWriter(arquivo) as xl:
+        pd.DataFrame(linhas).to_excel(
+            xl, sheet_name="Vendas", header=False, index=False
+        )
+        pd.DataFrame([["lixo"]]).to_excel(
+            xl, sheet_name="Outra", header=False, index=False
+        )
+
+    cfg = ConfigFonte(
+        formatos_data=[*CFG.formatos_data, "%Y-%m-%d %H:%M:%S"],
+        nome_aba="Vendas",
+        linhas_antes_do_cabecalho=2,
+    )
+
+    r = executar(str(arquivo), db, cfg)
+
+    assert (r.lidas, r.inseridas) == (1, 1)

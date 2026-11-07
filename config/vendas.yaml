@@ -7,3 +7,4 @@ formatos_data:
   - "%d/%m/%Y"
   - "%d/%m/%y"
   - "%Y/%m/%d"
+  - "%Y-%m-%d %H:%M:%S" # formato para a data de célula do Excel 

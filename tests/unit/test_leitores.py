@@ -1,8 +1,8 @@
-from etl.config import ConfigFonte
 import pandas as pd
-
-from etl.extract.leitores import ler_excel, ler_planilha
 import pytest
+
+from etl.config import ConfigFonte
+from etl.extract.leitores import ler_excel, ler_planilha
 
 
 def test_ler_excel_pula_titulos_e_calcula_linha_de_origem(tmp_path):

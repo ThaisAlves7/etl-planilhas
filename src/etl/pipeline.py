@@ -5,7 +5,7 @@ from sqlalchemy.engine import Engine
 
 from etl.config import ConfigFonte
 from etl.extract.arquivo import calcular_hash
-from etl.extract.leitores import ler_csv
+from etl.extract.leitores import ler_planilha
 from etl.load.loader import carregar_vendas
 from etl.load.rejeicoes import gravar_rejeicoes
 from etl.load.runs import (
@@ -44,7 +44,7 @@ def executar(
     run_id = iniciar_execucao(engine, Path(caminho).name, arquivo_hash)
 
     try:
-        bruto = ler_csv(caminho, delimitador=cfg.delimitador, encoding=cfg.encoding)
+        bruto = ler_planilha(caminho, cfg)
         limpo = limpar_pedidos(bruto, cfg.formatos_data)
         validas, rejeitadas = separar(limpo)
 
