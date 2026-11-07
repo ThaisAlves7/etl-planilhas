@@ -22,7 +22,6 @@ def limpar_data(texto: str, formatos: list[str]) -> date | None:
 
     for formato in formatos:
         try:
-
             return datetime.strptime(texto, formato).date()
 
         except ValueError:
@@ -45,7 +44,6 @@ def limpar_valor(texto: str | None) -> Decimal | None:
     # Sem virgula: o ponto (se houver) jé é o separador decimal
 
     try:
-
         return Decimal(valor).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     except InvalidOperation:
