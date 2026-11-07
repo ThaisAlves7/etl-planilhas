@@ -283,6 +283,8 @@ def main() -> None:
         fieldnames=["numero_pedido", "motivo_rejeicao"],
     )
 
+    salvar_xlsx(sujos, "data/sample/vendas_sujos.xlsx")
+
     print(defeitos)
     print(dict(Counter(e["motivo_rejeicao"] for e in esperadas)))
 
