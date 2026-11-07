@@ -1,6 +1,8 @@
+from etl.config import ConfigFonte
 import pandas as pd
 
-from etl.extract.leitores import ler_excel
+from etl.extract.leitores import ler_excel, ler_planilha
+import pytest
 
 
 def test_ler_excel_pula_titulos_e_calcula_linha_de_origem(tmp_path):
@@ -20,3 +22,11 @@ def test_ler_excel_pula_titulos_e_calcula_linha_de_origem(tmp_path):
 
     assert list(df.columns[:2]) == ["a", "b"]
     assert list(df["linha_origem"]) == [4, 5]  # 2 títulos + cabeçalho na linha 3
+
+
+def test_ler_planilha_recusa_extensao_desconhecida(tmp_path):
+    arquivo = tmp_path / "x.txt"
+    arquivo.write_text("a")
+
+    with pytest.raises(ValueError, match="txt"):
+        ler_planilha(str(arquivo), ConfigFonte(formatos_data=["%Y-%m-%d"]))

@@ -1,3 +1,5 @@
+from pathlib import Path
+from etl.config import ConfigFonte
 import pandas as pd
 
 
@@ -34,3 +36,15 @@ def ler_excel(
     df["linha_origem"] = df.index + linhas_antes_do_cabecalho + 2
 
     return df
+
+
+def ler_planilha(caminho: str, cfg: ConfigFonte) -> pd.DataFrame:
+    extensao = Path(caminho).suffix.lower()
+
+    if extensao == ".csv":
+        return ler_csv(caminho, delimitador=cfg.delimitador, encoding=cfg.encoding)
+
+    if extensao == ".xlsx":
+        return ler_excel(caminho, cfg.nome_aba, cfg.linhas_antes_do_cabecalho)
+
+    raise ValueError(f"Extensão não suportada: {extensao}")
