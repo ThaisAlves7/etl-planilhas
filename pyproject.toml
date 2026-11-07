@@ -18,11 +18,14 @@ dependencies = [
 etl = "etl.cli:app"
 
 [project.optional-dependencies]
-dev = ["pytest", "faker", "ruff"]
+dev = ["pytest", "faker", "ruff==0.17.4"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff.lint]
+ignore = ["EXE002"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
