@@ -132,7 +132,7 @@ def test_executar_le_planilha_excel(db, tmp_path):
             20.0,
         ],
     ]
-    
+
     with pd.ExcelWriter(arquivo) as xl:
         pd.DataFrame(linhas).to_excel(
             xl, sheet_name="Vendas", header=False, index=False
