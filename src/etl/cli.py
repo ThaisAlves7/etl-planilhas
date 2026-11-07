@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from sqlalchemy import create_engine
@@ -9,6 +10,7 @@ from etl.load.tables import metadata
 from etl.pipeline import executar
 
 app = typer.Typer(help="Pipeline ETL de planilha de vendas")
+CONFIG_PADRAO = Path("config/vendas.yaml")
 
 
 @app.callback()
@@ -37,21 +39,17 @@ def init_db() -> None:
 
 @app.command()
 def run(
-    arquivo: Path = typer.Argument(
-        ..., exists=True, dir_okay=False, help="CSV a processar."
-    ),
-    config: Path = typer.Option(
-        Path("config/vendas.yaml"),
-        "--config",
-        "-c",
-        exists=True,
-        dir_okay=False,
-    ),
-    force: bool = typer.Option(
-        False,
-        "--force",
-        help="Reprocessa mesmo que já tenha sido processado.",
-    ),
+    arquivo: Annotated[
+        Path, typer.Argument(exists=True, dir_okay=False, help="Planilha a processar")
+    ],
+    config: Annotated[
+        Path,
+        typer.Option("--config", "-c", exists=True, dir_okay=False),
+    ] = CONFIG_PADRAO,
+    force: Annotated[
+        bool,
+        typer.Option("--force", help="Reprocessa mesmo que já tenha sido processado."),
+    ] = False,
 ) -> None:
     """Processa uma planilha de vendas."""
 
