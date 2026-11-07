@@ -150,3 +150,21 @@ def test_executar_le_planilha_excel(db, tmp_path):
     r = executar(str(arquivo), db, cfg)
 
     assert (r.lidas, r.inseridas) == (1, 1)
+
+
+def test_csv_e_excel_com_os_mesmos_pedidos_dao_o_mesmo_resultado(db):
+    cfg_excel = carregar_config(str(CONFIG.with_name("vendas_excel.yaml")))
+    amostras = AMOSTRA.parent
+
+    def _carregar(arquivo, cfg):
+        executar(str(arquivo), db, cfg, force=True)
+
+        with db.begin() as conn:
+            linhas = conn.execute(select(vendas).order_by(vendas.c.numero_pedido)).all()
+            conn.execute(vendas.delete())
+
+        return [tuple(l) for l in linhas]
+
+    assert _carregar(amostras / "vendas_sujos.csv", CFG) == _carregar(
+        amostras / "vendas_sujos.xlsx", cfg_excel
+    )
