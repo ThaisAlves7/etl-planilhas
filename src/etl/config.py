@@ -5,9 +5,11 @@ from pydantic import BaseModel, ConfigDict, Field
 class ConfigFonte(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    nome_aba: str = "Vendas"
     encoding: str = "latin-1"
     delimitador: str = ";"
     formatos_data: list[str] = Field(min_length=1)
+    linhas_antes_do_cabecalho: int = Field(default=0, ge=0)
 
 
 def carregar_config(caminho: str) -> ConfigFonte:

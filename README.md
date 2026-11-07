@@ -1,6 +1,6 @@
 # ETL de Planilhas de Vendas
 
-![CI](https://github.com/ThaisAlves7/etl-planilhas/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/ThaisAlves7/etl-planilhas/actions/workflows/ci.yml/badge.svg)](https://github.com/ThaisAlves7/etl-planilhas/actions/workflows/ci.yml)
 
 Pipeline que lê planilhas de vendas **sujas**, corrige o que dá para corrigir, **rejeita com motivo** o que não dá e carrega o resultado no PostgreSQL. Um comando roda tudo, e **reprocessar o mesmo arquivo não duplica linhas**.
 
@@ -257,10 +257,10 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 
 ## Próximos passos
 
-- [ ] Leitura de planilhas **Excel** (`.xlsx`), com linhas de título acima do cabeçalho e escolha da aba.
-- [ ] Logs estruturados por etapa, com o `run_id`.
-- [ ] Migrações com Alembic.
-- [ ] Carga em modo streaming para arquivos muito grandes.
+- [ ] Leitura de planilhas **Excel** (`.xlsx`)
+  - [x] leitor com linhas de título acima do cabeçalho
+  - [ ] configuração da aba e escolha do leitor pela extensão do arquivo
+  - [ ] planilha de exemplo (`.xlsx`) gerada pelo gerador
 
 <!-- VERIFICAR: ao concluir o Excel, marque o item acima, mova-o para "Como funciona" e atualize o resumo no início ("planilhas CSV e Excel"). -->
 

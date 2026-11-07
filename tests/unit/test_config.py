@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from etl.config import carregar_config
+from etl.config import ConfigFonte, carregar_config
 
 CONFIG = Path(__file__).parents[2] / "config" / "vendas.yaml"
 
@@ -32,3 +32,11 @@ def test_chave_desconhecida_na_configuracao_e_recusada(tmp_path):
 
     with pytest.raises(ValidationError):
         carregar_config(str(arquivo))
+
+
+def test_configuracao_de_excel_tem_padroes_e_valida_limites():
+    cfg = ConfigFonte(formatos_data=["%Y-%m-%d"])
+    assert (cfg.nome_aba, cfg.linhas_antes_do_cabecalho) == ("Vendas", 0)
+
+    with pytest.raises(ValidationError):
+        ConfigFonte(formatos_data=["%Y-%m-%d"], linhas_antes_do_cabecalho=-1)
