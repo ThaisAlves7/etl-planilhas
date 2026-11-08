@@ -298,11 +298,7 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 - As rejeições de uma execução que falhou continuam no banco, ligadas a uma execução com `status = 'falha'`: ao analisar a quarentena, filtre por `ingestion_runs.status = 'sucesso'`.
 - O esquema é criado com `create_all`, sem sistema de migrações.
 - Em planilhas Excel, só a aba configurada é lida: um arquivo com várias abas de dados exige uma execução por aba.
-
-## Próximos passos
-
-- [ ] Migrações com Alembic.
-- [ ] Carga em modo streaming para arquivos muito grandes.
+- O arquivo é lido por inteiro na memória (pandas): a carga em lotes protege o banco e o limite de parâmetros do driver, mas o tamanho máximo do arquivo depende da memória disponível.
 
 ## Tecnologias
 
