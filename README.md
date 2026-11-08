@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/ThaisAlves7/etl-planilhas/actions/workflows/ci.yml/badge.svg)](https://github.com/ThaisAlves7/etl-planilhas/actions/workflows/ci.yml)
 
-Pipeline que lê planilhas de vendas **sujas**, corrige o que dá para corrigir, **rejeita com motivo** o que não dá e carrega o resultado no PostgreSQL. Um comando roda tudo, e **reprocessar o mesmo arquivo não duplica linhas**.
+Pipeline que lê planilhas de vendas **sujas** (CSV ou Excel), corrige o que dá para corrigir, **rejeita com motivo** o que não dá e carrega o resultado no PostgreSQL. Um comando roda tudo, e **reprocessar o mesmo arquivo não duplica linhas**.
 
 ## O que este projeto demonstra
 
@@ -14,7 +14,7 @@ Pipeline que lê planilhas de vendas **sujas**, corrige o que dá para corrigir,
 
 ```mermaid
 flowchart LR
-    A[Planilha CSV] --> B["extract<br/>lê como texto<br/>+ linha_origem"]
+    A["Planilha<br/>CSV ou Excel"] --> B["extract<br/>lê como texto<br/>+ linha_origem"]
     B --> C["transform / clean<br/>corrige o recuperável"]
     C --> D["transform / schema<br/>valida com pandera"]
     D -->|linhas válidas| E[("vendas<br/>upsert em lotes")]
@@ -26,7 +26,7 @@ Para cada arquivo, o `etl run`:
 
 1. calcula o hash SHA-256 do conteúdo e, se o arquivo já foi processado com sucesso (e não há `--force`), encerra avisando;
 2. registra a execução em `ingestion_runs` (`em_andamento`);
-3. lê o arquivo **tudo como texto**, guardando a linha de origem de cada registro;
+3. lê o arquivo (CSV ou Excel, escolhido pela extensão) **tudo como texto**, guardando a linha de origem de cada registro;
 4. **limpa** o que é recuperável e converte os tipos;
 5. **valida** cada linha; as inválidas vão para `rejected_rows`, com todos os motivos e o texto original;
 6. carrega as válidas na `vendas` com upsert, em lotes, dentro de uma transação;
@@ -65,12 +65,15 @@ O PostgreSQL também fica acessível pelo Windows/macOS/Linux em `localhost:5433
 | `etl run ARQUIVO` | Processa a planilha e mostra o resumo. |
 | `etl run ARQUIVO --config OUTRO.yaml` | Usa outra configuração de fonte (padrão: `config/vendas.yaml`). |
 | `etl run ARQUIVO --force` | Reprocessa mesmo que o arquivo já tenha sido processado. |
+| `etl run planilha.xlsx --config config/vendas_excel.yaml` | Processa uma planilha Excel (a aba e as linhas de título vêm da configuração). |
 
 Códigos de saída: `0` (sucesso ou arquivo ignorado), `1` (erro, já registrado como `falha` em `ingestion_runs`) e `2` (uso incorreto, como arquivo inexistente).
 
 ### Configuração da fonte
 
-`config/vendas.yaml`, validado com Pydantic (uma chave com erro de digitação é recusada, não ignorada):
+Cada fonte tem o seu YAML, validado com Pydantic (uma chave com erro de digitação é recusada, não ignorada).
+
+`config/vendas.yaml` (CSV):
 
 ```yaml
 encoding: latin-1
@@ -84,7 +87,20 @@ formatos_data:
   - "%Y/%m/%d"
 ```
 
-<!-- VERIFICAR: se você acrescentou o formato de data do Excel ("%Y-%m-%d %H:%M:%S") ou as chaves da aba, copie o YAML real. -->
+`config/vendas_excel.yaml` (Excel):
+
+```yaml
+nome_aba: Vendas
+linhas_antes_do_cabecalho: 2
+formatos_data:
+  - "%Y-%m-%d"
+  - "%Y-%m-%d %H:%M:%S"   # data de célula do Excel (a hora vem zerada)
+  - "%d/%m/%Y"
+  - "%d/%m/%y"
+  - "%Y/%m/%d"
+```
+
+O Excel guarda a data como data, e não como texto: ela chega ao pipeline como `2026-01-10 00:00:00`, por isso o formato extra.
 
 ## Demonstração
 
@@ -135,6 +151,14 @@ FROM rejected_rows
 ORDER BY linha_origem;
 ```
 
+**Planilha Excel** (duas linhas de título acima do cabeçalho, datas como células e uma aba extra sem dados úteis):
+
+```bash
+docker compose run --rm app etl run data/sample/vendas_sujos.xlsx --config config/vendas_excel.yaml
+```
+
+Os mesmos 200 pedidos em Excel dão o mesmo resultado que em CSV: um teste de integração compara as linhas gravadas nos dois casos.
+
 ## Regras de qualidade
 
 ### Limpeza (o que é corrigido)
@@ -146,6 +170,7 @@ ORDER BY linha_origem;
 | Valores como `R$ 1.234,50`, `1234,50` ou `1234.50` | convertidos para decimal com 2 casas |
 | Nomes em maiúsculas, minúsculas ou com espaços sobrando | normalizados (`Maria Silva`) |
 | Quantidade como texto | convertida para inteiro; o que não for inteiro vira nulo |
+| Datas de célula do Excel (`2026-01-10 00:00:00`) | aceitas pelo formato `%Y-%m-%d %H:%M:%S` da configuração do Excel |
 
 Quando um valor não pode ser convertido, a limpeza devolve **nulo** em vez de inventar um número. A linha é rejeitada na validação, e o texto original continua guardado.
 
@@ -153,7 +178,8 @@ Quando um valor não pode ser convertido, a limpeza devolve **nulo** em vez de i
 
 | Campo | Regra | Motivo registrado |
 | --- | --- | --- |
-| `numero_pedido` | obrigatório e único no arquivo | `campo_obrigatorio_ausente` |
+| `numero_pedido` | obrigatório | `campo_obrigatorio_ausente` |
+| `numero_pedido` | único no arquivo (as duas ocorrências são rejeitadas) | `numero_pedido_repetido` |
 | `data_pedido` | obrigatória e não pode ser futura | `data_futura` |
 | `cliente_nome` | obrigatório | `campo_obrigatorio_ausente` |
 | `cliente_email` | obrigatório e com formato válido | `email_invalido` |
@@ -161,8 +187,6 @@ Quando um valor não pode ser convertido, a limpeza devolve **nulo** em vez de i
 | `quantidade` | inteiro maior que 0 | `quantidade_invalida` |
 | `valor_unitario` | obrigatório e maior que 0 | `valor_unitario_invalido` |
 | `valor_total` | igual a `quantidade × valor_unitario` | `total_inconsistente` |
-
-<!-- VERIFICAR: rode um caso com numero_pedido repetido e confira o nome do motivo que aparece em rejected_rows para a regra de unicidade; acrescente na tabela. -->
 
 Uma linha pode ter mais de um problema: cada motivo vira uma linha em `rejected_rows`.
 
@@ -189,8 +213,9 @@ Alguns testes que dão confiança ao projeto:
 - **Injetado vs. detectado:** o gerador estraga linhas de propósito e anota quais; o teste exige que a quarentena contenha **exatamente** esses pares (pedido, motivo).
 - **Falha registrada:** um arquivo quebrado deixa a execução como `falha` (nunca pendurada) e o erro chega a quem chamou.
 - **Limites reais:** carga de 10.000 linhas (o driver limita os parâmetros por comando, por isso a carga é em lotes) e recusa de `numero_pedido` repetido.
+- **CSV e Excel equivalentes:** os mesmos pedidos nos dois formatos resultam nas mesmas linhas no banco.
 
-O CI (GitHub Actions) roda `ruff` e `pytest` com um serviço PostgreSQL a cada push.
+O CI (GitHub Actions) roda `ruff` e `pytest` com um serviço PostgreSQL a cada push, e o Dependabot propõe as atualizações de dependências e das actions.
 
 ## Dados de exemplo
 
@@ -205,6 +230,8 @@ docker compose run --rm app python scripts/gerar_dados_faker.py
 | `vendas_limpos.csv` | 200 pedidos válidos (o gabarito) |
 | `vendas_sujos.csv` | os mesmos pedidos com defeitos **recuperáveis**: datas em formatos mistos (5%), valores com `R$`/vírgula (10%) e nomes bagunçados (15%) |
 | `vendas_com_erros.csv` | defeitos recuperáveis **e** defeitos sem conserto: e-mail inválido, quantidade zero, total inconsistente e campo obrigatório vazio (3% de cada) |
+| `vendas_sujos.xlsx` | os mesmos pedidos de `vendas_sujos.csv` em Excel: duas linhas de título acima do cabeçalho, datas como células de data e uma aba extra sem dados úteis (use `--config config/vendas_excel.yaml`) |
+| `rejeicoes_esperadas.csv` | o gabarito dos defeitos sem conserto: pedido e motivo esperado |
 
 Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem conserto violam uma regra só, para o gabarito ser exato.
 
@@ -212,8 +239,12 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 
 ```text
 .
-├── .github/workflows/ci.yml     # ruff + pytest
-├── config/vendas.yaml           # configuração da fonte
+├── .github/
+│   ├── workflows/ci.yml         # ruff + pytest
+│   └── dependabot.yml           # atualização das actions
+├── config/
+│   ├── vendas.yaml              # configuração da fonte (CSV)
+│   └── vendas_excel.yaml        # configuração da fonte (Excel)
 ├── data/sample/                 # planilhas de exemplo
 ├── scripts/gerar_dados_faker.py # gerador de dados sujos
 ├── src/etl/
@@ -242,6 +273,8 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 - **Execução registrada em transação própria.** Se a carga falhar e desfizer tudo, o registro de que ela falhou (e por quê) permanece. A idempotência torna isso seguro: se o programa cair no meio, a execução fica `em_andamento` e a próxima a reprocessa sem duplicar nada.
 - **Carga atômica e em lotes.** O arquivo inteiro é uma transação (tudo ou nada); os lotes (1.000 linhas) respeitam o limite de parâmetros por comando do driver.
 - **Configuração validada.** Chave desconhecida no YAML é erro, para um `encodng` digitado errado não ser ignorado em silêncio.
+- **Excel como fonte configurável.** A aba e o número de linhas de título vêm da configuração, e a `linha_origem` conta essas linhas, para o analista achar o registro na planilha.
+- **Versões controladas.** O `ruff` tem versão exata (as regras padrão dele mudaram entre versões e derrubaram o CI de uma hora para outra) e as bibliotecas de execução são limitadas à série testada (`~=`), para uma versão nova não quebrar o projeto sem aviso.
 - **Mensagens de erro curtas.** O texto do erro registrado em `ingestion_runs` é cortado: as mensagens do driver incluem os parâmetros da consulta, que contêm dados pessoais.
 
 ## Limitações conhecidas
@@ -254,16 +287,14 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 - Execuções ignoradas (arquivo já processado) não deixam registro.
 - As rejeições de uma execução que falhou continuam no banco, ligadas a uma execução com `status = 'falha'`: ao analisar a quarentena, filtre por `ingestion_runs.status = 'sucesso'`.
 - O esquema é criado com `create_all`, sem sistema de migrações.
+- Em planilhas Excel, só a aba configurada é lida: um arquivo com várias abas de dados exige uma execução por aba.
 
 ## Próximos passos
 
-- [ ] Leitura de planilhas **Excel** (`.xlsx`)
-  - [x] leitor com linhas de título acima do cabeçalho
-  - [ ] configuração da aba e escolha do leitor pela extensão do arquivo
-  - [ ] planilha de exemplo (`.xlsx`) gerada pelo gerador
-
-<!-- VERIFICAR: ao concluir o Excel, marque o item acima, mova-o para "Como funciona" e atualize o resumo no início ("planilhas CSV e Excel"). -->
+- [ ] Logs estruturados por etapa, com o `run_id`.
+- [ ] Migrações com Alembic.
+- [ ] Carga em modo streaming para arquivos muito grandes.
 
 ## Tecnologias
 
-Python 3.12 · PostgreSQL 16 · pandas · pandera · Pydantic · SQLAlchemy 2 · psycopg 3 · Typer · pytest · Faker · ruff · Docker Compose · GitHub Actions
+Python 3.12 · PostgreSQL 16 · pandas · openpyxl · pandera · Pydantic · SQLAlchemy 2 · psycopg 3 · Typer · pytest · Faker · ruff · Docker Compose · GitHub Actions
