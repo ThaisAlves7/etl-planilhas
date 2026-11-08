@@ -159,6 +159,14 @@ docker compose run --rm app etl run data/sample/vendas_sujos.xlsx --config confi
 
 Os mesmos 200 pedidos em Excel dão o mesmo resultado que em CSV: um teste de integração compara as linhas gravadas nos dois casos.
 
+Em um banco zerado, a saída é:
+
+```text
+200 lidas, 200 válidas, 0 rejeitadas, 200 inseridas, 0 atualizadas
+```
+
+Rodada depois do `vendas_com_erros.csv` no mesmo banco, ela vira `200 lidas, 200 válidas, 0 rejeitadas, 24 inseridas, 176 atualizadas`: os 176 pedidos que já existiam são atualizados e os 24 que aquele arquivo havia rejeitado são inseridos. Nenhuma linha duplica.
+
 ## Regras de qualidade
 
 ### Limpeza (o que é corrigido)
@@ -280,6 +288,7 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 ## Limitações conhecidas
 
 - A carga só faz **upsert**: uma linha removida da planilha não é apagada do banco.
+- `atualizadas` conta as linhas que já existiam no banco, mesmo que os dados sejam idênticos aos da carga anterior (o upsert reescreve a linha).
 - Se o mesmo `numero_pedido` chega com dados diferentes, **a última carga vence**.
 - Valores sem vírgula (`1234.50`) são lidos como decimais com ponto; `1.234` sem vírgula seria lido como 1,23.
 - Partículas de nomes (`da`, `de`) também recebem inicial maiúscula (`Maria Da Silva`).
