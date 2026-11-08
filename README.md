@@ -283,6 +283,7 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 - **Configuração validada.** Chave desconhecida no YAML é erro, para um `encodng` digitado errado não ser ignorado em silêncio.
 - **Excel como fonte configurável.** A aba e o número de linhas de título vêm da configuração, e a `linha_origem` conta essas linhas, para o analista achar o registro na planilha.
 - **Versões controladas.** O `ruff` tem versão exata (as regras padrão dele mudaram entre versões e derrubaram o CI de uma hora para outra) e as bibliotecas de execução são limitadas à série testada (`~=`), para uma versão nova não quebrar o projeto sem aviso.
+- **Observabilidade no banco, não em arquivos de log.** Cada execução registra status e contadores em `ingestion_runs`, cada rejeição registra o motivo e o texto original em `rejected_rows`, e a CLI imprime o resumo ou a mensagem do erro. Um log por etapa repetiria essa informação sem acrescentar nada que não possa ser consultado com SQL.
 - **Mensagens de erro curtas.** O texto do erro registrado em `ingestion_runs` é cortado: as mensagens do driver incluem os parâmetros da consulta, que contêm dados pessoais.
 
 ## Limitações conhecidas
@@ -300,7 +301,6 @@ Cada linha recebe no máximo um defeito de cada grupo, e os defeitos sem consert
 
 ## Próximos passos
 
-- [ ] Logs estruturados por etapa, com o `run_id`.
 - [ ] Migrações com Alembic.
 - [ ] Carga em modo streaming para arquivos muito grandes.
 
