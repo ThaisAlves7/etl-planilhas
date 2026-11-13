@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
   "openpyxl~=3.1",
   "pandas~=3.1",
-  "pandera~=0.35.0",
+  "pandera~=0.36.0",
   "psycopg[binary]~=3.3",
   "pydantic~=2.14",
   "pyyaml~=6.0",
